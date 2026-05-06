@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아인잉글리쉬 정산 시스템</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+        body { font-family: 'Inter', 'Noto Sans KR', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        @media print {
+            .no-print { display: none; }
+            .print-shadow { shadow: none !important; border: 1px solid #e2e8f0; }
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-800 antialiased">
+
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="bg-white rounded-3xl shadow-sm p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-6 border border-slate-100">
+            <div class="flex items-center gap-4">
+                <div class="bg-indigo-600 p-4 rounded-2xl shadow-lg shadow-indigo-100">
+                    <i class="fa-solid fa-calculator text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight">아인잉글리쉬 정산 시스템</h1>
+                    <p class="text-sm text-slate-500 font-medium">잔액 기반 자동 횟수 조정 도구</p>
+                </div>
+            </div>
+            <div class="flex bg-slate-100 p-1 rounded-xl w-full md:w-auto">
+                <button onclick="setPeriod('1month')" id="btn-1month" class="period-btn flex-1 md:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all bg-white text-indigo-600 shadow-sm">1개월</button>
+                <button onclick="setPeriod('3month')" id="btn-3month" class="period-btn flex-1 md:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all text-slate-500 hover:text-slate-700">3개월</button>
+                <button onclick="setPeriod('6month')" id="btn-6month" class="period-btn flex-1 md:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all text-slate-500 hover:text-slate-700">6개월</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Left Input Panel -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="bg-white rounded-3xl shadow-sm p-7 border border-slate-100">
+                    <h2 class="text-lg font-bold mb-6 flex items-center gap-2">
+                        <span class="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
+                        1. 현재 수강 정보
+                    </h2>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-wider">기존 결제 패키지</label>
+                            <select id="currentPackage" onchange="updateCalculations()" class="w-full p-4 bg-slate-50 border-0 rounded-2xl font-bold text-slate-700 outline-none cursor-pointer hover:bg-slate-100 transition-colors">
+                                <!-- Options will be injected by JS -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-wider">진행 완료 횟수</label>
+                            <div class="relative">
+                                <input type="number" id="usedSessions" value="0" min="0" oninput="updateCalculations()" class="w-full p-4 bg-slate-50 border-0 rounded-2xl font-bold text-slate-700 outline-none pr-12 focus:ring-2 focus:ring-indigo-500 transition-all">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">회</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-sm p-7 border border-slate-100">
+                    <h2 class="text-lg font-bold mb-6 flex items-center gap-2">
+                        <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span>
+                        2. 변경할 수업 (주당 횟수)
+                    </h2>
+                    <div id="targetGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <!-- Buttons will be injected by JS -->
+                    </div>
+                    <p class="mt-4 text-[10px] text-slate-400 leading-relaxed italic">
+                        * 주당 수업 횟수가 줄어들면 할인율이 낮아져 단가가 상승할 수 있습니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Result Panel -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="bg-white rounded-3xl shadow-lg p-8 border border-indigo-50 relative overflow-hidden h-full">
+                    <div class="absolute -top-10 -right-10 opacity-[0.03]">
+                        <i class="fa-solid fa-chart-line text-[16rem] text-indigo-900"></i>
+                    </div>
+
+                    <div class="relative z-10">
+                        <h2 class="text-xl font-black mb-8 text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-file-invoice-dollar text-indigo-600"></i>
+                            정산 결과 리포트
+                        </h2>
+
+                        <div id="resultContent" class="space-y-8">
+                            <!-- Large Price Gap Warning -->
+                            <div id="gapWarning" class="hidden p-5 bg-rose-50 border border-rose-100 rounded-2xl flex gap-4">
+                                <i class="fa-solid fa-shield-halved text-rose-500 text-xl shrink-0"></i>
+                                <div>
+                                    <p class="text-sm font-bold text-rose-800">주의: 단가 격차 큼 <span id="gapPercentDisplay"></span></p>
+                                    <p class="text-xs text-rose-700 mt-1 leading-relaxed">패키지 간 할인율 차이가 큽니다. 고객에게 단가 상승 사유를 명확히 안내하세요.</p>
+                                </div>
+                            </div>
+
+                            <!-- Unit Price Comparison -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4 bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-1" id="label-current">기존 단가</p>
+                                    <p class="text-xl font-black text-slate-700" id="unit-current">₩0</p>
+                                </div>
+                                <div class="flex justify-center">
+                                    <div class="bg-white p-2 rounded-full shadow-sm">
+                                        <i class="fa-solid fa-arrow-right text-indigo-400"></i>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-1" id="label-target">변경 단가</p>
+                                    <p class="text-xl font-black" id="unit-target">₩0</p>
+                                </div>
+                            </div>
+
+                            <!-- Main Session Result -->
+                            <div class="py-8 text-center border-y border-dashed border-slate-200">
+                                <p class="text-sm font-bold text-indigo-600 mb-2 tracking-wide uppercase">변경 후 남은 수업 횟수</p>
+                                <h3 class="text-7xl font-black text-slate-900 tracking-tighter">
+                                    <span id="finalSessions">0</span><span class="text-3xl ml-2 text-slate-300 font-bold">회</span>
+                                </h3>
+                                <div id="diffBadge" class="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold">
+                                    <!-- Diff text injected here -->
+                                </div>
+                            </div>
+
+                            <!-- Calc Breakdown (Black Box) -->
+                            <div class="bg-slate-800 rounded-3xl p-6 text-white shadow-xl">
+                                <h4 class="text-sm font-bold mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-info text-indigo-400"></i>
+                                    고객 안내용 산출식
+                                </h4>
+                                <div class="space-y-3 text-xs font-mono opacity-90 leading-relaxed">
+                                    <div class="flex justify-between">
+                                        <span>잔여 예치금 가치 (잔여 <span id="math-rem-sess">0</span>회 × 단가)</span>
+                                        <span id="math-rem-value">₩0</span>
+                                    </div>
+                                    <div class="pt-2 border-t border-slate-600 flex justify-between font-bold text-white">
+                                        <span>변경될 단가 (<span id="math-target-label"></span> 기준)</span>
+                                        <span id="math-target-unit">₩0</span>
+                                    </div>
+                                    <div class="flex justify-between text-emerald-400 font-bold text-sm pt-2">
+                                        <span>계산 결과 (예치금 ÷ 단가)</span>
+                                        <span>= <span id="math-final-sess">0</span>회</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 no-print">
+                                <button onclick="window.print()" class="py-4 bg-slate-100 text-slate-800 font-bold rounded-2xl hover:bg-slate-200 transition-all">명세서 인쇄</button>
+                                <button class="py-4 bg-indigo-600 text-white font-black rounded-2xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">변경 확정</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guidance -->
+        <footer class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 no-print">
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6">
+                <h4 class="text-sm font-bold text-blue-800 mb-2 flex items-center gap-2 uppercase tracking-wide">
+                    <i class="fa-solid fa-circle-check"></i> 정산 원칙
+                </h4>
+                <p class="text-xs text-blue-700 leading-relaxed">
+                    할인율이 높은 패키지에서 주당 횟수를 줄이는 경우, '대량 구매 할인' 혜택이 축소되어 회당 단가가 상승합니다. 남은 결제 잔액을 기준으로 횟수가 다시 산정되는 것은 정당한 정산 원칙입니다.
+                </p>
+            </div>
+            <div class="bg-orange-50 border border-orange-100 rounded-2xl p-6">
+                <h4 class="text-sm font-bold text-orange-800 mb-2 flex items-center gap-2 uppercase tracking-wide">
+                    <i class="fa-solid fa-comment-dots"></i> 상담 대응 팁
+                </h4>
+                <p class="text-xs text-orange-700 leading-relaxed font-medium">
+                    "고객님, 주당 횟수를 줄이시면 회당 단가가 일반가에 가까워집니다. 따라서 현재 남은 결제 잔액 내에서 새로 바뀐 단가를 적용해 횟수가 조정되는 점 양해 부탁드립니다."
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const PRICE_DATA = {
+            '1month': [
+                { sessions: 4, label: '주 1회', price: 54000, unit: 13500 },
+                { sessions: 8, label: '주 2회', price: 94000, unit: 11750 },
+                { sessions: 12, label: '주 3회', price: 129000, unit: 10750 },
+                { sessions: 16, label: '주 4회', price: 149000, unit: 9313 },
+                { sessions: 20, label: '주 5회', price: 169000, unit: 8450 },
+                { sessions: 24, label: '주 6회', price: 202000, unit: 8417 },
+                { sessions: 28, label: '주 7회', price: 235000, unit: 8393 },
+                { sessions: 32, label: '주 8회', price: 268000, unit: 8375 },
+                { sessions: 36, label: '주 9회', price: 301000, unit: 8361 },
+                { sessions: 40, label: '주 10회', price: 334000, unit: 8350 },
+            ],
+            '3month': [
+                { sessions: 12, label: '주 1회', price: 150700, unit: 12558 },
+                { sessions: 24, label: '주 2회', price: 262300, unit: 10929 },
+                { sessions: 36, label: '주 3회', price: 359900, unit: 9997 },
+                { sessions: 48, label: '주 4회', price: 415700, unit: 8660 },
+                { sessions: 60, label: '주 5회', price: 471500, unit: 7858 },
+                { sessions: 72, label: '주 6회', price: 563600, unit: 7828 },
+                { sessions: 84, label: '주 7회', price: 655700, unit: 7806 },
+                { sessions: 96, label: '주 8회', price: 747700, unit: 7789 },
+                { sessions: 108, label: '주 9회', price: 839800, unit: 7776 },
+                { sessions: 120, label: '주 10회', price: 931900, unit: 7766 },
+            ],
+            '6month': [
+                { sessions: 24, label: '주 1회', price: 278600, unit: 11608 },
+                { sessions: 48, label: '주 2회', price: 485000, unit: 10104 },
+                { sessions: 72, label: '주 3회', price: 665600, unit: 9244 },
+                { sessions: 96, label: '주 4회', price: 768800, unit: 8008 },
+                { sessions: 120, label: '주 5회', price: 872000, unit: 7267 },
+                { sessions: 144, label: '주 6회', price: 1042300, unit: 7238 },
+                { sessions: 168, label: '주 7회', price: 1212600, unit: 7218 },
+                { sessions: 192, label: '주 8회', price: 1382900, unit: 7203 },
+                { sessions: 216, label: '주 9회', price: 1553200, unit: 7191 },
+                { sessions: 240, label: '주 10회', price: 1723400, unit: 7181 },
+            ]
+        };
+
+        let currentPeriod = '1month';
+        let targetFreq = 16;
+
+        function setPeriod(p) {
+            currentPeriod = p;
+            
+            // UI Update for buttons
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-indigo-600', 'shadow-sm');
+                btn.classList.add('text-slate-500', 'hover:text-slate-700');
+            });
+            document.getElementById(`btn-${p}`).classList.add('bg-white', 'text-indigo-600', 'shadow-sm');
+            document.getElementById(`btn-${p}`).classList.remove('text-slate-500', 'hover:text-slate-700');
+
+            // Set default sessions based on period
+            if(p === '1month') {
+                targetFreq = 16;
+                document.getElementById('usedSessions').value = 0;
+            } else if (p === '3month') {
+                targetFreq = 48;
+                document.getElementById('usedSessions').value = 0;
+            } else {
+                targetFreq = 96;
+                document.getElementById('usedSessions').value = 0;
+            }
+
+            renderInputs();
+            updateCalculations();
+        }
+
+        function renderInputs() {
+            const data = PRICE_DATA[currentPeriod];
+            
+            // Render Select Options
+            const select = document.getElementById('currentPackage');
+            select.innerHTML = data.map(item => 
+                `<option value="${item.sessions}" ${item.sessions === (currentPeriod === '1month' ? 20 : currentPeriod === '3month' ? 60 : 120) ? 'selected' : ''}>
+                    ${item.label} (${item.sessions}회)
+                </option>`
+            ).join('');
+
+            // Render Target Buttons
+            const grid = document.getElementById('targetGrid');
+            grid.innerHTML = data.map(item => 
+                `<button onclick="setTargetFreq(${item.sessions})" class="target-btn p-3 rounded-xl border-2 text-[11px] font-bold transition-all ${targetFreq === item.sessions ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-slate-50 bg-slate-50 text-slate-500 hover:bg-slate-100'}">
+                    ${item.label}
+                </button>`
+            ).join('');
+        }
+
+        function setTargetFreq(s) {
+            targetFreq = s;
+            renderInputs();
+            updateCalculations();
+        }
+
+        function updateCalculations() {
+            const curSess = parseInt(document.getElementById('currentPackage').value);
+            const usedSess = parseInt(document.getElementById('usedSessions').value) || 0;
+            
+            const curInfo = PRICE_DATA[currentPeriod].find(i => i.sessions === curSess);
+            const tarInfo = PRICE_DATA[currentPeriod].find(i => i.sessions === targetFreq);
+
+            const initialUnit = curInfo.unit;
+            const newUnit = tarInfo.unit;
+            const remSess = curSess - usedSess;
+            const remValue = remSess * initialUnit;
+            
+            const convertedSess = remValue / newUnit;
+            const roundedSess = Math.round(convertedSess * 10) / 10;
+            const sessDiff = (remSess - roundedSess).toFixed(1);
+
+            const gapPercent = ((newUnit - initialUnit) / initialUnit * 100).toFixed(1);
+
+            // Update UI
+            document.getElementById('label-current').innerText = `${curInfo.label} 단가`;
+            document.getElementById('label-target').innerText = `${tarInfo.label} 단가`;
+            document.getElementById('unit-current').innerText = `₩${initialUnit.toLocaleString()}`;
+            document.getElementById('unit-target').innerText = `₩${newUnit.toLocaleString()}`;
+            document.getElementById('unit-target').className = `text-xl font-black ${newUnit > initialUnit ? 'text-rose-600' : 'text-emerald-600'}`;
+
+            document.getElementById('finalSessions').innerText = roundedSess;
+            
+            const badge = document.getElementById('diffBadge');
+            if (newUnit > initialUnit) {
+                badge.innerText = `기존 ${remSess}회 대비 ${Math.abs(sessDiff)}회 차감됨`;
+                badge.className = "mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-600";
+            } else {
+                badge.innerText = `기존 ${remSess}회 대비 ${Math.abs(sessDiff)}회 추가됨`;
+                badge.className = "mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600";
+            }
+
+            // Warning Gap
+            const warning = document.getElementById('gapWarning');
+            if (gapPercent > 20) {
+                warning.classList.remove('hidden');
+                document.getElementById('gapPercentDisplay').innerText = `(${gapPercent}%)`;
+            } else {
+                warning.classList.add('hidden');
+            }
+
+            // Math Box
+            document.getElementById('math-rem-sess').innerText = remSess;
+            document.getElementById('math-rem-value').innerText = `₩${remValue.toLocaleString()}`;
+            document.getElementById('math-target-label').innerText = tarInfo.label;
+            document.getElementById('math-target-unit').innerText = `₩${newUnit.toLocaleString()}`;
+            document.getElementById('math-final-sess').innerText = roundedSess;
+        }
+
+        // Initialize
+        window.onload = () => setPeriod('1month');
+    </script>
+</body>
+</html>
