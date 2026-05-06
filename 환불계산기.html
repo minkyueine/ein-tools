@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아인잉글리쉬 환불 정산기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { background-color: #3b82f6; color: white; }
+        .mode-active-blue { background-color: #3b82f6; color: white; }
+        .mode-active-green { background-color: #10b981; color: white; }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        select { appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 1.5em 1.5em; padding-right: 2.5rem; }
+        
+        /* Toggle Switch Style */
+        .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #3b82f6; }
+        input:checked + .slider:before { transform: translateX(22px); }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-4 md:p-8 text-slate-800">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b pb-6 border-slate-200">
+            <div>
+                <h1 class="text-2xl font-bold text-blue-600 flex items-center gap-2">
+                    <i class="fas fa-calculator"></i>
+                    아인잉글리쉬 환불 정산기
+                </h1>
+                <p class="text-slate-500 text-sm mt-1 font-medium">효율적인 환불 및 수업 변경 관리</p>
+            </div>
+            <div id="modeButtons" class="bg-white p-1 rounded-xl shadow-sm border border-slate-200 flex">
+                <button onclick="setMode('refund')" id="btn-refund" class="px-6 py-2 rounded-lg text-sm font-bold transition-all mode-active-blue">환불 정산</button>
+                <button onclick="setMode('change')" id="btn-change" class="px-6 py-2 rounded-lg text-sm font-bold transition-all text-slate-600 hover:bg-slate-100">회차 변경</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Inputs -->
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-6 border-b pb-3">
+                        <h2 class="text-lg font-semibold flex items-center gap-2 text-slate-700">
+                            <i class="fas fa-edit text-blue-500"></i> 정보 입력
+                        </h2>
+                        <!-- Penalty Toggle: Only visible in 'refund' mode -->
+                        <div id="penaltyToggleArea" class="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100">
+                            <span class="text-xs font-bold text-blue-700">위약금(10%) 적용</span>
+                            <label class="switch">
+                                <input type="checkbox" id="applyPenalty" checked onchange="updateAll()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">학생명/연락처</label>
+                            <input type="text" id="studentName" placeholder="홍길동(010-0000)" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">담당 강사</label>
+                            <input type="text" id="teacherName" placeholder="Jane 선생님" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">수강 개월 수</label>
+                                <select id="courseMonths" onchange="autoCalcTotalClasses()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all font-bold text-slate-700">
+                                    <option value="1">1개월</option>
+                                    <option value="2">2개월</option>
+                                    <option value="3">3개월</option>
+                                    <option value="6">6개월</option>
+                                    <option value="12">12개월</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">주 수강 횟수</label>
+                                <select id="weeklyFreq" onchange="autoCalcTotalClasses()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all font-bold text-slate-700">
+                                    <option value="1">주 1회 (월 4회)</option>
+                                    <option value="2" selected>주 2회 (월 8회)</option>
+                                    <option value="3">주 3회 (월 12회)</option>
+                                    <option value="4">주 4회 (월 16회)</option>
+                                    <option value="5">주 5회 (월 20회)</option>
+                                    <option value="6">주 6회 (월 24회)</option>
+                                    <option value="7">주 7회 (월 28회)</option>
+                                    <option value="8">주 8회 (월 32회)</option>
+                                    <option value="9">주 9회 (월 36회)</option>
+                                    <option value="10">주 10회 (월 40회)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">실 결제 금액 (₩)</label>
+                                <input type="number" id="paymentAmount" value="0" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-blue-600 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                            </div>
+                            <div id="extraInputArea">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">결제 방법</label>
+                                <select id="paymentMethod" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all font-medium text-slate-700">
+                                    <option value="무통장">무통장 입금</option>
+                                    <option value="카드결제">카드결제</option>
+                                    <option value="네이버스토어">네이버스토어</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-blue-500 uppercase mb-1 italic">환불 사유 (내부 기록용)</label>
+                                <input type="text" id="refundReason" placeholder="불만 제기 / 개인 사정 등" class="w-full p-3 bg-blue-50 border border-blue-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="toast" class="hidden bg-slate-800 text-white p-4 rounded-xl flex items-center gap-3 animate-pulse shadow-lg">
+                    <i class="fas fa-check-circle text-emerald-400"></i>
+                    <span id="toastMessage">복사되었습니다!</span>
+                </div>
+            </div>
+
+            <!-- Previews -->
+            <div class="space-y-4">
+                <div class="flex bg-slate-200 p-1 rounded-t-2xl w-fit ml-auto shadow-sm">
+                    <button onclick="setTab('customer')" id="tab-customer" class="px-4 py-2 rounded-lg text-xs font-bold transition-all tab-active">고객용 미리보기</button>
+                    <button onclick="setTab('internal')" id="tab-internal" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-500 hover:bg-slate-300">내부 기록용</button>
+                </div>
+
+                <div class="bg-slate-900 text-white p-6 rounded-2xl rounded-tr-none shadow-2xl border border-slate-800">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-comment-dots text-blue-400"></i>
+                            <h2 id="previewTitle" class="text-lg font-bold text-slate-100">고객 전송용 메시지</h2>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="copyMsg(false)" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition-all active:scale-95 shadow-md">고객용 복사</button>
+                            <button onclick="copyMsg(true)" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-xl text-xs font-bold transition-all active:scale-95 shadow-md">내부용 복사</button>
+                        </div>
+                    </div>
+
+                    <div id="messagePreview" class="bg-slate-800 rounded-xl p-5 font-mono text-sm leading-relaxed whitespace-pre-wrap min-h-[400px] border border-slate-700 text-slate-200"></div>
+
+                    <div class="mt-6 pt-6 border-t border-slate-800 grid grid-cols-2 gap-4">
+                        <div class="bg-slate-800 p-4 rounded-xl">
+                            <p class="text-slate-400 text-xs mb-1 font-bold">회당 단가</p>
+                            <p id="stat-perClass" class="text-xl font-bold text-white">₩ 0</p>
+                        </div>
+                        <div class="bg-slate-800 p-4 rounded-xl border border-blue-500/20">
+                            <p class="text-slate-400 text-xs mb-1 font-bold">최종 정산액</p>
+                            <p id="stat-final" class="text-xl font-bold text-emerald-400">₩ 0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'refund';
+        let currentTab = 'customer';
+
+        const inputs = [
+            'studentName', 'teacherName', 'courseMonths', 'weeklyFreq',
+            'paymentAmount', 'paymentMethod', 'refundReason'
+        ];
+
+        function init() {
+            renderExtraInputs();
+            autoCalcTotalClasses();
+            
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', updateAll);
+            });
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const buttons = {
+                'refund': document.getElementById('btn-refund'),
+                'change': document.getElementById('btn-change')
+            };
+            
+            Object.values(buttons).forEach(btn => btn.className = 'px-6 py-2 rounded-lg text-sm font-bold transition-all text-slate-600 hover:bg-slate-100');
+            
+            const toggleArea = document.getElementById('penaltyToggleArea');
+            if(mode === 'refund') {
+                buttons['refund'].classList.add('mode-active-blue');
+                toggleArea.classList.remove('hidden');
+            } else {
+                buttons['change'].classList.add('mode-active-green');
+                toggleArea.classList.add('hidden');
+            }
+
+            renderExtraInputs();
+            autoCalcTotalClasses();
+            updateAll();
+        }
+
+        function setTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-customer').className = `px-4 py-2 rounded-lg text-xs font-bold transition-all ${tab === 'customer' ? 'tab-active' : 'text-slate-500 hover:bg-slate-300'}`;
+            document.getElementById('tab-internal').className = `px-4 py-2 rounded-lg text-xs font-bold transition-all ${tab === 'internal' ? 'tab-active' : 'text-slate-500 hover:bg-slate-300'}`;
+            document.getElementById('previewTitle').innerText = tab === 'customer' ? '고객 전송용 메시지' : '내부 운영 기록용';
+            updateAll();
+        }
+
+        function renderExtraInputs() {
+            const area = document.getElementById('extraInputArea');
+            if (currentMode === 'change') {
+                area.innerHTML = `
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1 text-green-600">변경 수강료 (₩)</label>
+                    <input type="number" id="newCoursePrice" value="0" class="w-full p-3 bg-green-50 border border-green-200 rounded-xl font-bold text-green-700 outline-none focus:ring-2 focus:ring-green-500 transition-all">
+                `;
+                document.getElementById('newCoursePrice').addEventListener('input', updateAll);
+            } else {
+                area.innerHTML = `
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">총 횟수 (수정 가능)</label>
+                            <input type="number" id="totalClasses" value="0" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 font-bold transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">진행 횟수</label>
+                            <input type="number" id="completedClasses" value="0" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 font-bold transition-all">
+                        </div>
+                    </div>
+                `;
+                document.getElementById('totalClasses').addEventListener('input', updateAll);
+                document.getElementById('completedClasses').addEventListener('input', updateAll);
+            }
+        }
+
+        function autoCalcTotalClasses() {
+            if (currentMode === 'change') return;
+            const months = parseInt(document.getElementById('courseMonths').value);
+            const weekly = parseInt(document.getElementById('weeklyFreq').value);
+            const totalInput = document.getElementById('totalClasses');
+            totalInput.value = months * weekly * 4;
+            updateAll();
+        }
+
+        function updateAll() {
+            const data = {
+                studentName: document.getElementById('studentName').value || '_____',
+                teacherName: document.getElementById('teacherName').value || '_____',
+                months: document.getElementById('courseMonths').value,
+                weekly: document.getElementById('weeklyFreq').value,
+                paymentAmount: parseInt(document.getElementById('paymentAmount').value) || 0,
+                paymentMethod: document.getElementById('paymentMethod').value,
+                refundReason: document.getElementById('refundReason').value || '',
+                totalClasses: document.getElementById('totalClasses')?.value ? parseInt(document.getElementById('totalClasses').value) : 0,
+                completedClasses: document.getElementById('completedClasses')?.value ? parseInt(document.getElementById('completedClasses').value) : 0,
+                newCoursePrice: document.getElementById('newCoursePrice')?.value ? parseInt(document.getElementById('newCoursePrice').value) : 0,
+                applyPenalty: document.getElementById('applyPenalty').checked
+            };
+
+            let perClassPrice = data.totalClasses > 0 ? Math.round(data.paymentAmount / data.totalClasses) : 0;
+            let remainingAmount;
+
+            if (data.completedClasses === 0) {
+                remainingAmount = data.paymentAmount;
+            } else {
+                remainingAmount = Math.max(0, data.paymentAmount - (perClassPrice * data.completedClasses));
+            }
+
+            let penalty = 0;
+            if (currentMode === 'refund' && data.completedClasses > 0 && data.applyPenalty) {
+                penalty = Math.round(data.paymentAmount * 0.1);
+            }
+
+            let finalRefund = currentMode === 'change' ? (data.paymentAmount - data.newCoursePrice) : (remainingAmount - penalty);
+
+            document.getElementById('stat-perClass').innerText = `₩ ${perClassPrice.toLocaleString()}`;
+            const finalStat = document.getElementById('stat-final');
+            finalStat.innerText = `₩ ${Math.abs(finalRefund).toLocaleString()}${finalRefund < 0 ? ' (추가결제)' : ''}`;
+            finalStat.className = `text-xl font-bold ${finalRefund >= 0 ? 'text-emerald-400' : 'text-orange-400'}`;
+
+            const isInternal = currentTab === 'internal';
+            document.getElementById('messagePreview').innerText = buildMessage(data, perClassPrice, (data.totalClasses - data.completedClasses), penalty, finalRefund, isInternal);
+        }
+
+        function buildMessage(data, perClass, remaining, penalty, final, isInternal) {
+            const courseInfo = `${data.months}개월 주 ${data.weekly}회`;
+            
+            if (currentMode === 'change') {
+                let msg = `# [수업변경 정산] ${data.studentName} / ${data.teacherName} 선생님\n`;
+                msg += `# 기존 결제 금액 : ${data.paymentAmount.toLocaleString()}원\n`;
+                msg += `# 변경 수강료 : ${data.newCoursePrice.toLocaleString()}원\n`;
+                msg += `# 정산 금액 : ${final.toLocaleString()}원 (${final >= 0 ? '환불' : '추가결제 필요'})\n`;
+                msg += `- 결제 방법 : ${data.paymentMethod}\n`;
+                if (isInternal) msg += `- 사유(내부) : ${data.refundReason || '미입력'}`;
+                return msg;
+            }
+
+            let msg = `# [환불안내] ${data.studentName} / ${data.teacherName} 선생님\n`;
+            msg += `# 환불액 : ${final.toLocaleString()}원\n`;
+            msg += `- 결제 방법 : ${data.paymentMethod}\n`;
+            
+            // 환불 방법 자동 표기
+            let refundMethod = "";
+            if (data.completedClasses === 0) refundMethod = "전액환불";
+            else if (penalty > 0) refundMethod = "부분환불 (위약금 포함)";
+            else refundMethod = "부분환불 (위약금 면제)";
+            
+            msg += `- 환불 방법 : ${refundMethod}\n`;
+            msg += `- 결제 금액 : ${data.paymentAmount.toLocaleString()}원\n`;
+            msg += `- 수업 기간 : ${courseInfo}\n`;
+            msg += `- 총 수업 횟수 : ${data.totalClasses}회\n`;
+            msg += `- 진행 횟수 : ${data.completedClasses}회\n`;
+            msg += `- 잔여 횟수 : ${remaining}회\n`;
+            msg += `- 회당 가격 : ${perClass.toLocaleString()}원\n`;
+            
+            if (penalty > 0) {
+                msg += `- 취소 위약금(10%) : ${penalty.toLocaleString()}원\n`;
+            } else if (currentMode === 'refund' && data.completedClasses > 0 && !data.applyPenalty) {
+                msg += `- 취소 위약금 : 0원 (면제 적용)\n`;
+            }
+
+            if (isInternal) msg += `- 환불 사유(내부) : ${data.refundReason || '미입력'}\n`;
+            msg += `# 최종 환불액 : ${final.toLocaleString()}원`;
+            return msg;
+        }
+
+        function copyMsg(isInternal) {
+            updateAll();
+            const text = document.getElementById('messagePreview').innerText;
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast(isInternal ? "내부 기록용 메시지가 복사되었습니다!" : "고객 전달용 메시지가 복사되었습니다!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            toastMsg.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
