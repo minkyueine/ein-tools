@@ -34,7 +34,7 @@
                     <i class="fas fa-calculator"></i>
                     아인잉글리쉬 환불 정산기
                 </h1>
-                <p class="text-slate-500 text-sm mt-1 font-medium">효율적인 환불 및 수업 변경 관리</p>
+                <p class="text-slate-500 text-sm mt-1 font-medium text-blue-400">엑셀 정밀 연동 및 수업 변경 관리</p>
             </div>
             <div id="modeButtons" class="bg-white p-1 rounded-xl shadow-sm border border-slate-200 flex">
                 <button onclick="setMode('refund')" id="btn-refund" class="px-6 py-2 rounded-lg text-sm font-bold transition-all mode-active-blue">환불 정산</button>
@@ -96,6 +96,12 @@
                                     <option value="8">주 8회 (월 32회)</option>
                                     <option value="9">주 9회 (월 36회)</option>
                                     <option value="10">주 10회 (월 40회)</option>
+                                    <option value="11">주 11회 (월 44회)</option>
+                                    <option value="12">주 12회 (월 48회)</option>
+                                    <option value="13">주 13회 (월 52회)</option>
+                                    <option value="14">주 14회 (월 56회)</option>
+                                    <option value="15">주 15회 (월 60회)</option>
+                                    <option value="16">주 16회 (월 64회)</option>
                                 </select>
                             </div>
                         </div>
@@ -268,15 +274,20 @@
                 applyPenalty: document.getElementById('applyPenalty').checked
             };
 
+            // 1. 단가 계산 (단가는 표기용으로만 반올림 처리)
             let perClassPrice = data.totalClasses > 0 ? Math.round(data.paymentAmount / data.totalClasses) : 0;
             let remainingAmount;
 
+            // 2. 엑셀 연동 수학식 계산 (중간 단수 반올림 오차 방지)
             if (data.completedClasses === 0) {
                 remainingAmount = data.paymentAmount;
             } else {
-                remainingAmount = Math.max(0, data.paymentAmount - (perClassPrice * data.completedClasses));
+                const remainingClasses = data.totalClasses - data.completedClasses;
+                // [정밀 비례식] 결제총액 * (남은횟수 / 전체횟수) 후 최종 반올림
+                remainingAmount = data.totalClasses > 0 ? Math.round(data.paymentAmount * (remainingClasses / data.totalClasses)) : 0;
             }
 
+            // 3. 위약금 계산 (결제금액의 10% 반올림)
             let penalty = 0;
             if (currentMode === 'refund' && data.completedClasses > 0 && data.applyPenalty) {
                 penalty = Math.round(data.paymentAmount * 0.1);
@@ -290,10 +301,10 @@
             finalStat.className = `text-xl font-bold ${finalRefund >= 0 ? 'text-emerald-400' : 'text-orange-400'}`;
 
             const isInternal = currentTab === 'internal';
-            document.getElementById('messagePreview').innerText = buildMessage(data, perClassPrice, (data.totalClasses - data.completedClasses), penalty, finalRefund, isInternal);
+            document.getElementById('messagePreview').innerText = buildMessage(data, perClassPrice, (data.totalClasses - data.completedClasses), remainingAmount, penalty, finalRefund, isInternal);
         }
 
-        function buildMessage(data, perClass, remaining, penalty, final, isInternal) {
+        function buildMessage(data, perClass, remaining, remainingAmount, penalty, final, isInternal) {
             const courseInfo = `${data.months}개월 주 ${data.weekly}회`;
             
             if (currentMode === 'change') {
@@ -323,6 +334,7 @@
             msg += `- 진행 횟수 : ${data.completedClasses}회\n`;
             msg += `- 잔여 횟수 : ${remaining}회\n`;
             msg += `- 회당 가격 : ${perClass.toLocaleString()}원\n`;
+            msg += `- 잔여 수업료 : ${remainingAmount.toLocaleString()}원\n`;
             
             if (penalty > 0) {
                 msg += `- 취소 위약금(10%) : ${penalty.toLocaleString()}원\n`;
