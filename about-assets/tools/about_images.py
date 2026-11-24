@@ -24,7 +24,7 @@ def hero(name):
     W_,H_=1440,860; im=canvas(W_,H_,WHITE); d=ImageDraw.Draw(im)
     R(d,(0,0,W_,96),0,fill=INK)
     for i,c in enumerate((RED,YEL,MINT)): E(d,(48+i*44,34,76+i*44,62),fill=c)
-    T(d,(200,48),'1:1 화상수업',F('Bold',30),WHITE,'lm'); pill(d,W_-48,24,'연출한 예시 장면',24,fill=WHITE,fg=INK,right=True)
+    T(d,(200,48),'1:1 화상수업',F('Bold',30),WHITE,'lm')
     tile(im,(80,150,480,550),'#CFE0FF',mood='think',**STU); tile(im,(960,150,1360,550),'#FFD3CC',**TEA); d=ImageDraw.Draw(im)
     T(d,(280,588),'학생',F('Bold',28),INK,'mm'); T(d,(1160,588),'선생님',F('Bold',28),INK,'mm')
     T(d,(720,190),'그 자리에서 바로 교정',F('Bold',30),GRAY,'mm')
