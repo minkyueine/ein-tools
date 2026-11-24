@@ -14,10 +14,8 @@ def stairs():
     b+=f'<path d="M500,400 Q640,300 720,310 M740,300 L720,312 L734,330" fill="none" stroke="{K}" stroke-width="0"/>'
     return 1440,540,TINT,b
 def level():
-    b=framed(150,200,300,300,PINK_BG,teacher(140,170,0.85,'point'))
-    b+=bubble(50,40,500,110,YEL,(300,204),['레벨은 제가 봐 드릴게요!'],40)
-    b+=spark(90,330,18)+spark(520,420,14,MINT)
-    return 600,520,DARK,b
+    b=framed(20,20,300,300,PINK_BG,teacher(140,170,0.85,'point'))
+    return 340,340,DARK,b
 def match():
     b=framed(110,60,300,320,BLUE_BG,student(150,190,0.85,'cheer'))+framed(790,60,300,320,PINK_BG,teacher(150,180,0.85,'none'))
     b+=burst(600,130,112,YEL,'딱 맞는 교재!',44)+mascot(600,318,0.52,'cheer')+note(470,300)+spark(730,290,18,MINT)
