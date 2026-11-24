@@ -1,0 +1,23 @@
+{"posts":[
+ {"prefix":"p1","category":"knowhow",
+  "thumbnail":{"line1":"단어가","line2":"생각 안 날 때","band":"풀어 말하는 3문장","sub":"It's a thing you use to…","bubble":"???","mood":"think"},
+  "body":[
+   {"type":"cards","file":"p1_body1.png","title":"단어가 생각 안 날 때 쓰는 3문장","rows":[
+     {"label":"용도로 설명하기","main":"It's a thing you use to ___.","example":"It's a thing you use to open bottles.","note":"병을 딸 때 쓰는 물건  → bottle opener"},
+     {"label":"비슷한 것에 빗대기","main":"It's like ___, but ___.","example":"It's like a jacket, but it has no sleeves.","note":"소매 없는 재킷  → vest"},
+     {"label":"사람·장소로 말하기","main":"It's a person who ___.","example":"It's a person who fixes pipes.","note":"배관을 고치는 사람  → plumber"}]},
+   {"type":"dialogue","file":"p1_body2.png","title":"수업에서는 이렇게 이어져요","turns":[
+     {"who":"student","mood":"think","lines":["I bought a… sorry, I don't know the word.","It's a thing you use to dry your hair."],"ko":"단어는 모르겠어요. 머리 말릴 때 쓰는 물건이에요."},
+     {"who":"teacher","lines":["Oh, a hair dryer!"],"ko":"아, 헤어드라이어요!"},
+     {"who":"student","lines":["Yes, a hair dryer.","I bought a new hair dryer yesterday."],"ko":"새 단어를 넣어 문장을 처음부터 다시 말해요."}]}]},
+ {"prefix":"p2","category":"tip",
+  "thumbnail":{"line1":"영어 듣기","line2":"받아쓰기","band":"10초 문장 4단계","sub":"듣기 → 쓰기 → 확인 → 말하기","bubble":"뭐라고?","mood":"think"},
+  "body":[
+   {"type":"note","file":"p2_body1.png","title":"받아쓰기 노트는 이렇게 써요","steps":[
+     {"label":"들리는 만큼 적기 (안 들린 곳은 빈칸)","lines":["I'm ______ pick ______ coffee","on my way to work."]},
+     {"label":"스크립트와 비교해 색으로 표시","lines":["I'm [[going to]] pick [[up a]] coffee","on my way to work."]},
+     {"label":"왜 놓쳤는지 한 줄 메모","big":false,"lines":["going to → 빠르게 붙어서 들림 (아는 단어)","up a → 앞 단어 pick과 이어져 들림 (연음)"]}]},
+   {"type":"table","file":"p2_body2.png","title":"글자와 소리가 다른 대표 구간","headers":["글자로는","빠르게 말하면 (대략)"],
+    "rows":[["going to","gonna"],["want to","wanna"],["pick up a","pi-kuh-puh"],["should have","should've"],["What do you","Whaddaya"]],
+    "footnote":"일상 대화 속도 기준의 대략적인 소리예요. 말하는 사람과 속도에 따라 달라요."}]}
+]}
