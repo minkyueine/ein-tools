@@ -103,6 +103,7 @@ def turtle(mood='tired',arms='coffee'):
         o+=f'<path d="M0,180 L32,180 Q32,208 16,208 Q0,208 0,180 Z" fill="{W}" {ST}/><ellipse cx="16" cy="180" rx="16" ry="4.5" fill="#6B4630" {ST} stroke-width="2.4"/><circle cx="35" cy="191" r="6.5" fill="{GREEN}" {ST} stroke-width="2.6"/>'
         o+=f'<path d="M9,168 q-4,-5 0,-10 q4,-5 0,-10 M20,168 q-4,-5 0,-10 q4,-5 0,-10" fill="none" stroke="#B9B2AB" stroke-width="2.6" stroke-linecap="round"/>'
     if arms=='point': o+=P('M62,166 Q46,182 52,204 L66,200 Q64,186 74,176 Z',GREEN)
+    if arms=='down': o+=P('M134,160 Q152,164 152,200 Q150,220 138,218 Q128,214 130,190 Z',GREEN)+P('M68,160 Q50,164 50,200 Q52,220 64,218 Q74,214 72,190 Z',GREEN)
     o+='<g transform="translate(4,-2) scale(.96)">'
     o+=f'<path d="M36,98 Q34,38 100,38 Q166,38 164,98 Q162,148 100,148 Q38,148 36,98 Z" fill="{GREEN}" {ST} stroke-width="3.6"/>'
     cy=94
@@ -120,4 +121,4 @@ def turtle(mood='tired',arms='coffee'):
         o+=f'<rect x="60" y="166" width="80" height="60" rx="7" fill="{W}" {ST}/><rect x="70" y="177" width="36" height="7" rx="3.5" fill="{CORAL}"/><rect x="70" y="191" width="60" height="5" rx="2.5" fill="#E2DCD6"/><rect x="70" y="202" width="46" height="5" rx="2.5" fill="#E2DCD6"/><rect x="70" y="213" width="52" height="5" rx="2.5" fill="{YEL}"/>'
         o+=C(58,198,9.5,GREEN)+C(142,198,9.5,GREEN)
     return o
-TURTLE={'turtle-coffee':turtle('tired','coffee'),'turtle-point':turtle('calm','point'),'turtle-paper':turtle('calm','paper'),'turtle-cheer':turtle('open','up')}
+TURTLE={'turtle-down':turtle('calm','down'),'turtle-coffee':turtle('tired','coffee'),'turtle-point':turtle('calm','point'),'turtle-paper':turtle('calm','paper'),'turtle-cheer':turtle('open','up')}
