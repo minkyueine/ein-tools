@@ -6,7 +6,12 @@ VB={'t':'-30 -6 250 262','p':'-10 -4 250 262'}
 def ch(name,h):
     if name.startswith('turtle'): body=chars.TURTLE[name]; vb=VB['t']
     else: body=chars.SET[name]; vb=VB['p']
-    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}" height="{h}" width="{h*250/262:.0f}" style="flex:none;display:block">{body}</svg>'
+    return svg_mid(body,vb,h)
+_n=[0]
+def svg_mid(body,vb,h=None):
+    """중간 버전: 선은 한 번만, 손으로 그린 듯 살짝 삐뚤게."""
+    _n[0]+=1; i=_n[0]; size=f' height="{h}" width="{h*250/262:.0f}" style="flex:none;display:block"' if h else ''
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}"{size}><defs><filter id="w{i}" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="2" seed="{4+i%9}"/><feDisplacementMap in="SourceGraphic" scale="5.5"/></filter></defs><g filter="url(#w{i})">{body}</g></svg>'
 COL={'w':'#FFFFFF','y':'#FFD966','m':'#A8E6CF','b':'#DCE9FF','p':'#FFE7E1'}
 def bub(text,c='w',fs=40,tail=None):
     r={'l':'28px 28px 28px 6px','r':'28px 28px 6px 28px',None:'28px'}[tail]
