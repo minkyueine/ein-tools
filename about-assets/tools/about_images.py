@@ -72,6 +72,33 @@ def f4(im,d):
     E(d,(590,170,690,270),fill=GREEN); d.line([(614*S,222*S),(634*S,242*S),(668*S,200*S)],fill=WHITE,width=10*S,joint='curve')
     R(d,(0,600,720,720),0,fill=TINT); T(d,(360,650),'고친 문장을 내 것으로',F('Bold',32),INK,'mm')
 
+def trial(name,bg,draw):
+    W_,H_=720,480; im=canvas(W_,H_,bg); d=ImageDraw.Draw(im); draw(im,d); out(im,name)
+def phone(d,x,y,w,h):
+    R(d,(x+8,y+8,x+w+8,y+h+8),36,fill=INK); R(d,(x,y,x+w,y+h),36,fill=WHITE,outline=INK,width=6)
+def t1(im,d):
+    phone(d,70,50,250,400); T(d,(195,104),'무료체험 신청',F('Black',26),INK,'mm'); d.line([(96*S,136*S),(294*S,136*S)],fill=LINE,width=3*S)
+    R(d,(96,160,294,220),14,fill=YEL); T(d,(195,190),'강사 추천받기',F('Bold',22),INK,'mm')
+    R(d,(96,236,294,296),14,fill=SOFT); T(d,(195,266),'직접 강사 선택',F('Bold',22),GRAY,'mm')
+    R(d,(96,356,294,420),32,fill=CORAL); T(d,(195,388),'신청하기',F('Black',24),WHITE,'mm')
+    bust(im,540,250,84,480,mood='smile',**STU); d=ImageDraw.Draw(im)
+    bubble(d,(380,40,690,130),['오늘 바로 될까?'],fill=WHITE,size=30)
+def t2(im,d):
+    tile(im,(50,110,300,360),'#CFE0FF',mood='smile',**STU); tile(im,(330,110,580,360),'#FFD3CC',**TEA); d=ImageDraw.Draw(im)
+    E(d,(520,30,700,210),fill=INK); E(d,(530,40,690,200),fill=YEL); T(d,(610,120),'15분',F('Black',56),INK,'mm')
+    bubble(d,(120,385,600,455),['Hello! Nice to meet you.'],fill=WHITE,size=30)
+def t3(im,d):
+    card(d,(150,50,570,440),r=28,fill=WHITE,off=8); T(d,(186,100),'레벨테스트 결과',F('Black',28),INK,'lm')
+    E(d,(440,66,540,166),fill=CORAL); T(d,(490,116),'Lv.4',F('Black',34),WHITE,'mm')
+    for i,(n,w) in enumerate((('어휘',0.62),('리스닝',0.74),('유창성',0.5),('문법',0.56),('발음',0.7))):
+        y=200+i*46; T(d,(186,y),n,F('Bold',22),GRAY,'lm'); R(d,(280,y-9,534,y+9),9,fill=SOFT); R(d,(280,y-9,280+254*w,y+9),9,fill=CORAL)
+    pill(d,360-110,10,'30분~1시간 안에 도착',22,fill=INK)
+def t4(im,d):
+    bust(im,150,260,84,480,mood='smile',**STU); d=ImageDraw.Draw(im)
+    bubble(d,(290,60,690,200),['수업 시간과 교재,','같이 정해 드릴게요'],fill=YEL,size=30)
+    bubble(d,(360,240,690,320),['네, 좋아요!'],fill=WHITE,size=30)
+    pill(d,290,360,'학습 매니저 상담',22,fill=INK)
+
 def main(outdir):
     os.makedirs(outdir,exist_ok=True); p=lambda n: os.path.join(outdir,n)
     hero(p('hero_scene.png'))
@@ -80,4 +107,5 @@ def main(outdir):
     pain(p('pain_3.png'),'think',[(['I go to there','yesterday.'],WHITE),(['Okay! Next~'],YEL)],'#FFE9E4')
     pain(p('pain_4.png'),'think',[(['어제 뭐','배웠더라…?'],WHITE)],'#EAFBF4')
     for i,fn in enumerate((f1,f2,f3,f4),1): flow(p(f'flow_{i}.png'),i,fn)
+    for i,(fn,bg) in enumerate(((t1,'#E8F0FF'),(t2,'#FFF6D6'),(t3,'#FFE9E4'),(t4,'#EAFBF4')),1): trial(p(f'trial_{i}.png'),bg,fn)
 if __name__=='__main__': main(sys.argv[1])
