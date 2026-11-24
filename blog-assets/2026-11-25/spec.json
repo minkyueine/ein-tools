@@ -1,0 +1,23 @@
+{"posts":[
+ {"prefix":"p1","category":"knowhow",
+  "thumbnail":{"line1":"화상영어","line2":"의견 말하기","band":"이유 붙이는 3단계","sub":"I think… because… For example…","bubble":"왜냐면…","mood":"think"},
+  "body":[
+   {"type":"cards","file":"p1_body1.png","title":"의견 말하기 3단계","rows":[
+     {"label":"의견부터 한 문장","main":"I think ___.","example":"I think working from home is better.","note":"재택근무가 더 좋다고 생각해요"},
+     {"label":"이유 붙이기","main":"It's because ___.","example":"It's because I can save time.","note":"시간을 아낄 수 있어서요"},
+     {"label":"예시로 마무리","main":"For example, ___.","example":"For example, I don't need to take the subway.","note":"지하철을 안 타도 돼요"}]},
+   {"type":"dialogue","file":"p1_body2.png","title":"수업에서는 이렇게 이어져요","turns":[
+     {"who":"teacher","lines":["Do you prefer working","from home or at the office?"],"ko":"재택근무와 사무실 근무 중 어느 쪽이 좋아요?"},
+     {"who":"student","mood":"think","lines":["I think working from home is better.","It's because I can save time."],"ko":"의견을 먼저 말하고, 이유를 바로 붙여요."},
+     {"who":"student","mood":"smile","lines":["For example, I don't need to take","the subway for an hour."],"ko":"예를 들면, 지하철을 한 시간씩 안 타도 돼요."}]}]},
+ {"prefix":"p2","category":"tip",
+  "thumbnail":{"line1":"영어 수업","line2":"복습 방법","band":"10분 노트 3단계","sub":"적기 → 바꿔 쓰기 → 녹음","bubble":"뭐였지?","mood":"think"},
+  "body":[
+   {"type":"note","file":"p2_body1.png","title":"10분 복습 노트는 이렇게 써요","steps":[
+     {"label":"고쳐 받은 문장 3개 적기","lines":["I [[went to]] the gym yesterday.","(내가 한 말: I go to the gym yesterday.)"]},
+     {"label":"내 이야기로 바꿔 쓰기","lines":["I [[went to]] the dentist last Friday."]},
+     {"label":"소리 내어 읽고 녹음하기","big":false,"lines":["세 문장을 이어서 읽고 휴대폰으로 녹음해요.","다음 수업 직전에 한 번 다시 들어요."]}]},
+   {"type":"table","file":"p2_body2.png","title":"배운 문장을 내 문장으로","mood":"smile","headers":["수업에서 고쳐 받은 문장","내 이야기로 바꾼 문장"],
+    "rows":[["I went to the gym.","I went to the dentist."],["I'm interested in art.","I'm interested in baking."],["It depends on the weather.","It depends on my schedule."],["I've been busy lately.","I've been tired lately."]],
+    "footnote":"틀은 그대로 두고, 단어만 내 생활에 맞게 바꿔요."}]}
+]}
