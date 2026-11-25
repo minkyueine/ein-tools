@@ -1,0 +1,147 @@
+{
+ "posts": [
+  {
+   "prefix": "p1",
+   "category": "knowhow",
+   "thumbnail": {
+    "line1": "화상영어",
+    "line2": "주말 이야기",
+    "band": "길게 답하는 3단계",
+    "sub": "한 일 → 장면 → 느낌",
+    "bubble": "Nothing…",
+    "mood": "think"
+   },
+   "body": [
+    {
+     "type": "cards",
+     "file": "p1_body1.png",
+     "title": "주말 이야기 3단계",
+     "rows": [
+      {
+       "label": "한 일을 한 문장으로",
+       "main": "I went ___ with ___.",
+       "example": "I went hiking with my friends.",
+       "note": "친구들과 등산을 갔어요"
+      },
+      {
+       "label": "장면 하나 덧붙이기",
+       "main": "We ___ for ___.",
+       "example": "We walked for three hours.",
+       "note": "세 시간 동안 걸었어요"
+      },
+      {
+       "label": "느낌으로 마무리하기",
+       "main": "It was ___, but ___.",
+       "example": "It was tiring, but the view was amazing.",
+       "note": "힘들었지만 경치가 정말 멋졌어요"
+      }
+     ]
+    },
+    {
+     "type": "dialogue",
+     "file": "p1_body2.png",
+     "title": "수업에서는 이렇게 이어져요",
+     "turns": [
+      {
+       "who": "teacher",
+       "lines": [
+        "How was your weekend?"
+       ],
+       "ko": "주말 어떻게 보냈어요?"
+      },
+      {
+       "who": "student",
+       "mood": "think",
+       "lines": [
+        "I stayed home and cooked dinner.",
+        "I made kimchi stew for my family."
+       ],
+       "ko": "한 일을 말하고, 장면 하나를 덧붙여요."
+      },
+      {
+       "who": "student",
+       "mood": "smile",
+       "lines": [
+        "It was a little salty,",
+        "but everyone liked it."
+       ],
+       "ko": "조금 짰지만 다들 맛있게 먹었어요."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "prefix": "p2",
+   "category": "tip",
+   "thumbnail": {
+    "line1": "say와 tell",
+    "line2": "차이",
+    "band": "구분하는 3가지 기준",
+    "sub": "say something · tell someone",
+    "bubble": "said me?",
+    "mood": "think"
+   },
+   "body": [
+    {
+     "type": "table",
+     "file": "p2_body1.png",
+     "title": "say와 tell, 뒤에 오는 말이 달라요",
+     "headers": [
+      "say + 한 말",
+      "tell + 듣는 사람"
+     ],
+     "rows": [
+      [
+       "She said she was tired.",
+       "She told me she was tired."
+      ],
+      [
+       "He said he was busy.",
+       "He told us he was busy."
+      ],
+      [
+       "I said I was sorry.",
+       "I told her I was sorry."
+      ],
+      [
+       "What did she say?",
+       "What did she tell you?"
+      ]
+     ],
+     "footnote": "say 뒤에 듣는 사람을 넣을 때는 to를 붙여요. (say to me)"
+    },
+    {
+     "type": "note",
+     "file": "p2_body2.png",
+     "title": "통째로 익히는 짝꿍 표현",
+     "mood": "smile",
+     "steps": [
+      {
+       "label": "say와 함께 쓰는 말",
+       "lines": [
+        "[[say]] hello  ·  [[say]] sorry",
+        "[[say]] goodbye  ·  [[say]] thank you"
+       ]
+      },
+      {
+       "label": "tell과 함께 쓰는 말",
+       "lines": [
+        "[[tell]] the truth  ·  [[tell]] a lie",
+        "[[tell]] a story  ·  [[tell]] a joke"
+       ]
+      },
+      {
+       "label": "내 문장으로 한 번씩",
+       "big": false,
+       "lines": [
+        "I said sorry to my friend.",
+        "My dad told me a funny story."
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
