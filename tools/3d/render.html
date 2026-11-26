@@ -1,9 +1,0 @@
-<!DOCTYPE html><html><body style="margin:0;background:transparent"><canvas id="c" width="800" height="840"></canvas>
-<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
-<script type="module">
-import { student, turtle, prop, renderInto } from './chars3d.js';
-const q = new URLSearchParams(location.search); const [kind, pose] = q.get('c').split('-');
-const turn = q.has('turn') ? +q.get('turn') : (kind === 'turtle' ? 0.25 : kind === 'prop' ? 0 : -0.25);
-try { renderInto(document.getElementById('c'), () => kind === 'turtle' ? turtle(pose) : kind === 'prop' ? prop(pose) : student(pose), { turn }); window.done = 'ok'; }
-catch (e) { window.done = 'err ' + e.message; }
-</script></body></html>
