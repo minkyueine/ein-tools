@@ -23,8 +23,9 @@ def play(cx, cy, r):
 def t874():
     b = pill(80, 70, '영상 가이드', '#fff', K, 42)
     b += T(80, 345, ['줌 연락처', '수락·추가'], 132, '#fff', 'start')
-    b += framed(90, 600, 780, 500, '#FFF6D6', teacher(390, 300, 1.3, 'point'))
-    b += play(850, 1020, 120)
+    b += box(90, 600, 780, 500, '#FFF6D6', 40, 8)
+    b += play(480, 830, 150)
+    b += f'<rect x="150" y="1030" width="660" height="18" rx="9" fill="#F2D9A8" stroke="{K}" stroke-width="5"/><rect x="150" y="1030" width="260" height="18" rx="9" fill="{CORAL}" stroke="{K}" stroke-width="5"/><circle cx="410" cy="1039" r="20" fill="#fff" stroke="{K}" stroke-width="6"/>'
     b += pill(1030, 640, 'PC', YEL, K, 50, 'middle') + pill(1030, 770, '휴대폰', '#fff', K, 50, 'middle')
     b += spark(980, 260, 30, YEL) + spark(1110, 400, 20, '#fff') + spark(1060, 900, 18, YEL)
     return '#EC6856', b
@@ -32,17 +33,15 @@ def t874():
 # 2) 794 연락처 요청 — 연파랑, 휴대폰 화면 카드 + 학생
 def t794():
     b = T(600, 150, ['연락처 요청 수락', '& 선생님 추가'], 96, K)
-    b += box(420, 360, 640, 640, '#fff', 56, 8)
-    b += T(740, 430, '연락처 요청', 46, K, weight=800)
-    b += f'<path d="M460,480 L1020,480" stroke="{K}" stroke-width="5" stroke-linecap="round" {W}/>'
-    b += box(460, 520, 560, 200, '#FDF1EE', 28, 6)
-    b += f'<circle cx="550" cy="620" r="54" fill="{CORAL}" stroke="{K}" stroke-width="6" {W}/>' + T(550, 620, 'T', 54, '#fff')
-    b += T(630, 590, 'Teacher', 44, K, 'start', 800) + T(630, 648, '연락처 요청을 보냈어요', 30, '#7a6a64', 'start', 600)
-    b += box(520, 770, 220, 96, CORAL, 48, 6) + T(630, 818, '수락', 46, '#fff')
-    b += box(770, 770, 220, 96, '#F4F4F4', 48, 6) + T(880, 818, '거절', 46, '#9a8f8a', weight=700)
-    b += f'<path d="M560,930 L920,930" stroke="#E2DCD6" stroke-width="14" stroke-linecap="round"/>'
-    b += f'<g {W}>{student(250, 760, 1.12, "cheer")}</g>'
-    b += burst(980, 340, 84, YEL, '연결!', 50) + spark(150, 420, 22, YEL) + spark(1110, 1080, 18, CORAL)
+    b += box(140, 360, 920, 640, '#fff', 56, 8)
+    b += T(600, 440, '연락처 요청', 54, K, weight=800)
+    b += f'<path d="M180,500 L1020,500" stroke="{K}" stroke-width="5" stroke-linecap="round" {W}/>'
+    b += box(180, 540, 840, 210, '#FDF1EE', 28, 6)
+    b += f'<circle cx="290" cy="645" r="62" fill="{CORAL}" stroke="{K}" stroke-width="6" {W}/>' + T(290, 645, 'T', 62, '#fff')
+    b += T(390, 612, 'Teacher', 52, K, 'start', 800) + T(390, 678, '연락처 요청을 보냈어요', 36, '#7a6a64', 'start', 600)
+    b += box(350, 800, 230, 100, CORAL, 50, 6) + T(465, 850, '수락', 50, '#fff')
+    b += box(620, 800, 230, 100, '#F4F4F4', 50, 6) + T(735, 850, '거절', 50, '#9a8f8a', weight=700)
+    b += burst(1010, 350, 84, YEL, '연결!', 50) + spark(150, 420, 22, YEL) + spark(1110, 1080, 18, CORAL)
     b += ''
     return '#E4EEFF', b
 
@@ -54,7 +53,7 @@ def t448():
         b += box(x, y, 320, 1200 - y + 40, fill, 34, 8)
         b += f'<circle cx="{x + 70}" cy="{y + 74}" r="44" fill="{K}" {W}/>' + T(x + 70, y + 74, str(i), 54, '#fff')
         b += T(x + 160, y + 170, lab, 70, '#fff' if fill == CORAL else K, weight=900)
-    b += f'<g {W}>{student(970, 350, 0.8, "cheer")}</g>'
+    b += f'<path d="M970,560 L970,330" stroke="{K}" stroke-width="10" stroke-linecap="round"/><path d="M970,335 L1100,375 L970,420 Z" fill="{MINT}" stroke="{K}" stroke-width="7" stroke-linejoin="round" {W}/>' + burst(1040, 470, 60, YEL, '완료', 36)
     b += spark(180, 560, 26, '#fff') + spark(380, 420, 18, CORAL) + note(640, 560)
     return '#FFD966', b
 
@@ -63,17 +62,19 @@ def t606():
     b = f'<rect x="40" y="40" width="1120" height="1120" rx="60" fill="{MINT_BG}" stroke="{K}" stroke-width="8" {W}/>'
     b += pill(600, 110, '첫 수업 준비', MINT, K, 40, 'middle')
     b += T(600, 330, ['무료체험', '입장하는 방법'], 120, K)
-    b += framed(120, 560, 460, 460, '#fff', teacher(230, 260, 0.95, 'point'))
-    b += bubble(640, 560, 460, 130, YEL, (596, 640), ['수업 5분 전!'], 56)
-    b += box(660, 740, 420, 120, CORAL, 60, 8) + T(870, 800, '입장하기 ▶', 54, '#fff')
-    b += f'<g {W}>{student(870, 990, 0.58, "happy")}</g>'
+    b += box(150, 560, 900, 470, '#fff', 44, 8)
+    b += f'<circle cx="300" cy="700" r="90" fill="{YEL}" stroke="{K}" stroke-width="8" {W}/><path d="M300,640 L300,700 L345,725" fill="none" stroke="{K}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>'
+    b += T(430, 668, '수업 5분 전', 60, K, 'start', 900) + T(430, 738, '입장 안내가 왔어요', 40, '#7a6a64', 'start', 700)
+    b += box(240, 850, 720, 120, CORAL, 60, 8) + T(600, 910, '입장하기 ▶', 60, '#fff')
     b += spark(110, 520, 22, YEL) + spark(1090, 960, 18, CORAL)
     return '#ffffff', b
 
 # 5) 250 수업 녹화 — 진한 남색, REC 화면
 def t250():
     b = T(600, 170, ['Zoom 수업', '녹화하는 법'], 120, '#fff')
-    b += framed(150, 400, 900, 560, '#FFE6DF', teacher(450, 330, 1.0, 'none'))
+    b += box(150, 400, 900, 560, '#FFE6DF', 40, 8)
+    b += f'<circle cx="600" cy="690" r="130" fill="#fff" stroke="{K}" stroke-width="8" {W}/><circle cx="600" cy="690" r="70" fill="#FF4B3A" stroke="{K}" stroke-width="6" {W}/>'
+    b += T(600, 890, '00:12:34', 52, K, weight=800)
     b += f'<rect x="190" y="440" width="230" height="84" rx="42" fill="{DK}" stroke="{K}" stroke-width="6" {W}/><circle cx="240" cy="482" r="20" fill="#FF4B3A"/>' + T(330, 482, 'REC', 44, '#fff')
     for i, lab in enumerate(['PC', '태블릿', '휴대폰']):
         b += pill(600 + (i - 1) * 300, 1010, lab, [YEL, '#fff', MINT][i], K, 46, 'middle')
@@ -84,7 +85,10 @@ def t250():
 def t91():
     b = T(600, 150, ['수강신청 방법', '두 가지 길'], 112, K)
     b += box(90, 380, 470, 600, '#fff', 44, 8) + box(640, 380, 470, 600, '#fff', 44, 8)
-    b += framed(150, 430, 350, 330, '#FFF6D6', teacher(175, 190, 0.78, 'none'))
+    b += box(150, 430, 350, 330, '#FFF6D6', 36, 6)
+    for i,(y,f) in enumerate(((470,CORAL),(570,MINT),(670,'#9DBFF5'))):
+        b += f'<circle cx="205" cy="{y+40}" r="34" fill="{f}" stroke="{K}" stroke-width="5"/><rect x="260" y="{y+20}" width="200" height="16" rx="8" fill="#E2D6C8"/><rect x="260" y="{y+48}" width="140" height="14" rx="7" fill="#EFE6DA"/>'
+    b += spark(470, 470, 22, YEL)
     b += T(325, 860, ['선생님부터', '고르기'], 56, K)
     gx, gy = 700, 440
     for r in range(5):
