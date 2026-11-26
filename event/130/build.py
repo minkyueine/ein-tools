@@ -95,7 +95,7 @@ def build(base):
 <div style="font-size: 22px; font-weight: 800; line-height: 1.45; color: {INK}">25분, 오늘부터 시작해 보세요 🙌</div>
 <p style="margin: 8px 0 0; font-size: 16px; color: #666">무료체험으로 먼저 수업을 경험해 볼 수 있어요.</p>
 <div style="max-width: 360px; margin: 6px auto 0">
-{btn('https://einenglish.com/member/register', '무료체험 신청하기', True)}
+{btn('https://einenglish.com/apply/step1', '무료체험 신청하기', True)}
 {btn('https://einenglish.com/study', '바로 수강신청하기')}
 </div></section>
 
