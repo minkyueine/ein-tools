@@ -37,47 +37,47 @@ def shadow(x, y, w):
 
 
 B = {}
-# 206 무이자: 파란 배경, 왼쪽 글 + 오른쪽 위 카드 + 아래 학생·거북이
+# 206 무이자: 파란 배경 · 큰 카드 + 노트북 든 직장인 (거북이 없음)
 B['206'] = f"""<div style="position:absolute;inset:0;background:linear-gradient(160deg,#7DB0F7,#4F86E6);overflow:hidden">{dots(['#fff', '#FFD966'])}
 <div style="position:absolute;left:84px;top:96px">{pill('카드 결제 부담 DOWN')}
 <div style="margin-top:34px;font:800 64px/1.2 {F};color:#fff">5만원 이상이면</div>
 <div style="margin-top:6px">{big('무이자', 190)}</div><div style="margin-top:4px">{big('할부', 190, '#FFD966')}</div></div>
-{im('prop-card', 330, 640, 110, 'transform:rotate(-6deg)')}
-{im('student-cheer', 330, 230, None, bottom=0)}{im('turtle-wave', 520, 600, None, bottom=0)}
+{im('prop-card', 300, 690, 120, 'transform:rotate(-8deg)')}
+{im('woman-laptop', 500, 560, None, bottom=0)}
 </div>"""
-# 207 지인 추천: 초록 배경, 가운데 큰 5%+5%, 아래 학생·거북이 나란히 + 동전
+# 207 지인 추천: 초록 배경 · 친구 두 사람 (거북이 없음)
 B['207'] = f"""<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,#7CD6A0,#3FAE72);overflow:hidden">{dots(['#fff', '#FFD966'])}
-<div style="position:absolute;left:0;right:0;top:80px;text-align:center">{pill('지인 추천 이벤트', '#fff')}
-<div style="margin-top:28px;font:800 62px/1.2 {F};color:#fff">추천하면 둘 다</div>
-<div style="margin-top:10px;display:flex;justify-content:center;align-items:center;gap:18px">{big('5%', 200)}<span style="font:900 100px/1 {F};color:#FFD966;-webkit-text-stroke:5px {INK};paint-order:stroke fill">+</span>{big('5%', 200)}</div></div>
-{im('prop-coin', 150, 60, 600, 'transform:rotate(-14deg)')}{im('prop-coin', 120, 905, 560, 'transform:rotate(16deg)')}
-{im('student-cheer', 360, 150, None, bottom=0)}{im('turtle-cheer', 470, 560, None, bottom=-10)}
+<div style="position:absolute;left:0;right:0;top:70px;text-align:center">{pill('지인 추천 이벤트', '#fff')}
+<div style="margin-top:24px;font:800 62px/1.2 {F};color:#fff">추천하면 둘 다</div>
+<div style="margin-top:6px;display:flex;justify-content:center;align-items:center;gap:18px">{big('5%', 190)}<span style="font:900 100px/1 {F};color:#FFD966;-webkit-text-stroke:5px {INK};paint-order:stroke fill">+</span>{big('5%', 190)}</div></div>
+{im('prop-coin', 130, 470, 640, 'transform:rotate(-14deg)')}
+{im('man-glasses', 430, 40, None, bottom=0)}{im('woman-coffee', 440, 600, None, bottom=0)}
 </div>"""
-# 205 체험 후기: 노란 배경, 왼쪽 큰 거북이(쓰는 중) + 말풍선, 오른쪽 글
+# 205 체험 후기: 노란 배경 · 글 쓰는 거북이 + 말풍선 (거북이가 주인공인 유일한 글)
 B['205'] = f"""<div style="position:absolute;inset:0;background:#FFD45E;overflow:hidden">{dots(['#fff', '#EC6856'])}
 <div style="position:absolute;left:0;top:0;width:540px;height:1080px;background:#FFC23D;border-radius:0 300px 300px 0"></div>
-{im('bubble', 200, 300, 170, 'transform:rotate(-6deg)')}
-{im('turtle-write', 520, 30, None, bottom=60)}
+{im('bubble', 190, 290, 190, 'transform:rotate(-6deg)')}
+{im('turtle-write', 500, 40, None, bottom=90)}
 <div style="position:absolute;left:580px;top:250px">{pill('신규 회원 선물', '#fff', size=34)}
 <div style="margin-top:28px;font:800 56px/1.25 {F};color:{INK}">무료체험<br>후기 쓰면</div>
 <div style="margin-top:14px;display:flex;align-items:flex-end;gap:6px">{big('3,000', 150, '#EC6856')}{big('원', 90, '#EC6856', sw=5)}</div>
 <div style="margin-top:18px;font:800 52px/1.2 {F};color:{INK}">바로 적립!</div></div>
 </div>"""
-# 203 네이버 재수강: 크림 배경, 위 글 + 쇼핑백·동전 + 오른쪽 거북이
+# 203 네이버 재수강: 크림 배경 · 쇼핑백·동전 + 아이 (학부모 재구매)
 B['203'] = f"""<div style="position:absolute;inset:0;background:#FFF4E2;overflow:hidden">{dots(['#2DB46B', '#FFD966', '#EC6856'])}
 <div style="position:absolute;left:0;right:0;top:80px;text-align:center">{pill('재수강 회원 전용', '#2DB46B', '#fff')}
 <div style="margin-top:26px;font:800 60px/1.2 {F};color:{INK}">네이버 스토어에서</div>
 <div style="margin-top:10px;display:flex;justify-content:center;align-items:center;gap:20px">{big('3만', 170, '#FFD45E')}<span style="font:900 110px/1 {F};color:#2DB46B">→</span>{big('4만', 170, '#EC6856')}</div></div>
-{im('prop-bag', 360, 130, 600, 'transform:rotate(-6deg)')}{im('prop-coins', 190, 360, 840)}
-{im('turtle-paper', 480, 620, None, bottom=0)}
+{im('prop-bag', 340, 90, 610, 'transform:rotate(-6deg)')}{im('prop-coins', 170, 330, 860)}
+{im('kid-girl', 430, 500, None, bottom=0)}
 </div>"""
-# 199 수강후기: 보라 배경, 위 글 + 별, 아래 선생님·거북이(책)
+# 199 수강후기: 보라 배경 · 폭죽·별 + 신난 학생
 B['199'] = f"""<div style="position:absolute;inset:0;background:linear-gradient(170deg,#9C8CF5,#6F5DE0);overflow:hidden">{dots(['#fff', '#FFD966'])}
-{im('prop-star', 210, 820, 70, 'transform:rotate(12deg)')}{im('prop-star', 110, 60, 560, 'transform:rotate(-14deg)')}
+{im('prop-star', 180, 850, 80, 'transform:rotate(12deg)')}{im('popper', 260, 760, 330, 'transform:rotate(-8deg)')}
 <div style="position:absolute;left:84px;top:110px">{pill('수강후기 이벤트')}
 <div style="margin-top:30px;font:800 62px/1.2 {F};color:#fff">베스트 후기는</div>
 <div style="margin-top:8px">{big('2만원', 200, '#FFD966')}</div></div>
-{im('teacher-wave', 470, 220, None, bottom=0)}{im('turtle-book', 400, 520, None, bottom=0)}
+{im('student-cheer', 470, 170, None, bottom=0)}
 </div>"""
 
 
@@ -92,11 +92,11 @@ def duo(lt, lc, lh, rt, rc, rh, bg='#FFF6D6'):
 
 
 S = {
-    '206': duo('한 번에 결제하기<br>부담돼요', 'student-worry', 300, '카드 무이자 할부로<br>나눠 내세요!', 'turtle-wave', 330, '#E3EDFF'),
-    '207': duo('친구한테 아인<br>추천했어요!', 'student-cheer', 250, '두 분 다 5%씩<br>적립해 드려요!', 'turtle-cheer', 330, '#E6F6EE'),
-    '205': duo('체험 후기<br>남겼어요!', 'student-cheer', 250, '3,000원<br>적립해 드릴게요!', 'turtle-paper', 330, '#FFF6D6'),
-    '203': duo('다음 달도<br>계속 들을래요!', 'student-cheer', 250, '네이버에서 3만원 내면<br>4만원 적립!', 'turtle-clip', 320, '#FFF4E2'),
-    '199': duo('선생님 덕분에<br>말이 늘었어요!', 'student-cheer', 250, '그 이야기를<br>후기로 남겨 주세요!', 'teacher-wave', 340, '#EEEAFF'),
+    '206': duo('한 번에 결제하기<br>부담돼요', 'student-worry', 290, '카드 무이자 할부로<br>나눠 내세요!', 'teacher-wave', 300, '#E3EDFF'),
+    '207': duo('친구한테 아인<br>추천했어요!', 'man-glasses', 280, '덕분에 저도<br>5% 받았어요!', 'woman-coffee', 280, '#E6F6EE'),
+    '205': duo('체험 후기<br>남겼어요!', 'student-exam', 300, '3,000원<br>적립해 드릴게요!', 'staff-wave', 320, '#FFF6D6'),
+    '203': duo('다음 달도<br>계속 들을래요!', 'woman-laptop', 300, '네이버에서 3만원 내면<br>4만원 적립!', 'turtle-headset', 290, '#FFF4E2'),
+    '199': duo('선생님 덕분에<br>말이 늘었어요!', 'man-suit', 310, '그 이야기를<br>후기로 남겨 주세요!', 'turtle-book', 290, '#EEEAFF'),
 }
 
 with sync_playwright() as p:
