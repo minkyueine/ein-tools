@@ -123,11 +123,11 @@ def table(head, rows, first_w='30%'):
 def write(here, cdn, title_lines, banner_alt, build):
     """post.html(사이트용: 배너+본문)과 preview.html(로컬 미리보기)을 쓴다."""
     import os
-    post = banner(cdn + 'banner.png', banner_alt) + build(cdn)
+    post = banner(cdn + 'banner.jpg', banner_alt) + build(cdn)
     open(os.path.join(here, 'post.html'), 'w').write(post)
     open(os.path.join(here, 'preview.html'), 'w').write(f'''<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>미리보기</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"></head>
 <body style="margin:0;background:#fff"><div style="max-width:640px;margin:0 auto;padding:24px 0">
 <div style="text-align:center;font-family:Pretendard,sans-serif"><div style="color:#666;font-size:15px">이벤트</div><h1 style="margin:10px 0 20px;font-size:30px;line-height:1.35">{'<br>'.join(title_lines)}</h1></div>
-{banner('banner.png', banner_alt)}{build('')}</div></body></html>''')
+{banner('banner.jpg', banner_alt)}{build('')}</div></body></html>''')
     return post
