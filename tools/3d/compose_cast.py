@@ -18,7 +18,7 @@ def ch(name, h, x, bottom=28, flip=False, extra=''):
     t = 'transform:scaleX(-1);' if flip else ''
     return (f'<div style="position:absolute;left:{x}px;bottom:{bottom}px;height:{h}px">'
             f'<div style="position:absolute;left:8%;right:8%;bottom:-10px;height:{h*.07:.0f}px;border-radius:50%;background:rgba(0,0,0,.16);filter:blur(7px)"></div>'
-            f'<img src="{CAST}{name}.png" style="position:relative;height:{h}px;{t}{extra}"></div>')
+            f'<img class="cc" src="{CAST}{name}.png" style="position:relative;height:{h}px;{t}{extra}"></div>')
 
 
 def prop(name, h, x, y, extra=''):
@@ -110,16 +110,19 @@ def duo(lt, lc, lh, rt, rc, rh, bg):
     return f"""<div style="position:absolute;inset:4px;background:{bg};border:4px solid {INK};border-radius:44px;overflow:hidden">
 <div style="position:absolute;left:0;right:0;top:400px;bottom:-100px;background:rgba(255,255,255,.55);border-radius:50% 50% 0 0/50px 50px 0 0"></div>
 {ch(lc, lh, 110, 30)}{ch(rc, rh, 580, 30)}
-<div style="position:absolute;left:30px;top:28px;z-index:2">{bub(lt)}</div><div style="position:absolute;right:30px;top:28px;z-index:2">{bub(rt, '#FFD966')}</div></div>"""
+<div class="bb" style="position:absolute;left:30px;top:28px;z-index:2">{bub(lt)}</div><div class="bb" style="position:absolute;right:30px;top:28px;z-index:2">{bub(rt, '#FFD966')}</div></div>"""
 
 
+H = 300  # 말풍선(위쪽 약 165px)과 겹치지 않는 높이
 S = {
-    '130': duo('친구랑 같이<br>시작할래요!', 'adult-recommend', 345, '두 분 다 5%씩<br>적립해 드려요!', 'teacher-clap', 345, '#E6F6EE'),
-    '206': duo('한 번에 결제하기<br>부담돼요', 'adult-phone', 345, '카드 무이자 할부로<br>나눠 내세요!', 'teacher-explain', 345, '#E3EDFF'),
-    '207': duo('친구한테 아인<br>추천했어요!', 'adult-recommend', 345, '덕분에 저도<br>5% 받았어요!', 'student-gift', 315, '#E6F6EE'),
-    '205': duo('체험 후기<br>남겼어요!', 'student-phone', 335, '3,000원<br>적립해 드릴게요!', 'teacher-thumbs', 345, '#FFF6D6'),
-    '211': duo('첫 결제인데<br>혜택 있어요?', 'adult-card', 345, '결제 금액의 5%를<br>바로 드려요!', 'teacher-explain', 345, '#FFF1EC'),
-    '887': duo('15분 체험으론<br>아직 잘 모르겠어요', 'student-think', 325, '3번 더 해 보고<br>정해도 돼요!', 'teacher-thumbs', 345, '#E4F5F3'),
+    '130': duo('친구랑 같이<br>시작할래요!', 'adult-recommend', H, '두 분 다 5%씩<br>적립해 드려요!', 'teacher-clap', H, '#E6F6EE'),
+    '206': duo('한 번에 결제하기<br>부담돼요', 'adult-phone', H, '카드 무이자 할부로<br>나눠 내세요!', 'teacher-explain', H, '#E3EDFF'),
+    '207': duo('친구한테 아인<br>추천했어요!', 'adult-recommend', H, '덕분에 저도<br>5% 받았어요!', 'student-gift', H, '#E6F6EE'),
+    '205': duo('체험 후기<br>남겼어요!', 'student-phone', H, '3,000원<br>적립해 드릴게요!', 'teacher-thumbs', H, '#FFF6D6'),
+    '211': duo('첫 결제인데<br>혜택 있어요?', 'adult-card', H, '결제 금액의 5%를<br>바로 드려요!', 'teacher-explain', H, '#FFF1EC'),
+    '199': duo('선생님 덕분에<br>말이 늘었어요!', 'adult-thumbs', H, '그 이야기를<br>후기로 남겨 주세요!', 'teacher-clap', H, '#EEEAFF'),
+    '203': duo('다음 달도<br>계속 들을래요!', 'adult-phone', H, '네이버에서 3만원 내면<br>4만원 적립!', 'teacher-explain', H, '#FFF4E2'),
+    '887': duo('15분 체험으론<br>아직 잘 모르겠어요', 'student-think', H, '3번 더 해 보고<br>정해도 돼요!', 'teacher-thumbs', H, '#E4F5F3'),
 }
 
 
@@ -149,6 +152,9 @@ with sync_playwright() as p:
         tmp = '/tmp/cast_job.html'
         open(tmp, 'w').write(f'<html><body style="margin:0;width:{w}px;height:{h}px;position:relative;overflow:hidden;background:transparent">{html}</body></html>')
         pg = b.new_page(viewport={'width': w, 'height': h}); pg.goto('file://' + tmp); pg.wait_for_timeout(300)
+        ov = pg.evaluate('''() => { const b=[...document.querySelectorAll('.bb')].map(e=>e.getBoundingClientRect()); const c=[...document.querySelectorAll('.cc')].map(e=>e.getBoundingClientRect());
+          let n=0; for (const x of b) for (const y of c) if (x.left<y.right && y.left<x.right && x.top<y.bottom && y.top<x.bottom) n++; return n; }''')
+        if ov: print('OVERLAP', path, ov)
         if path.endswith('.jpg'): pg.screenshot(path=path, type='jpeg', quality=92)
         else: pg.screenshot(path=path, omit_background=transparent)
         pg.close(); print(path)
@@ -184,6 +190,18 @@ T = {
 <div style="margin-top:14px;display:flex;justify-content:center;align-items:flex-end;gap:8px">{big('3,000', 220, '#EC6856')}{big('원', 120, '#EC6856', sw=6)}</div>
 <div style="margin-top:20px">{line('바로 적립!', 72)}</div></div>
 {prop('prop-bubble', 230, 110, 760, 'transform:rotate(-8deg)')}{prop('prop-coins', 220, 760, 800)}""", ('#fff', '#EC6856')),
+    '199': thumb('linear-gradient(170deg,#9C8CF5,#6F5DE0)', f"""
+<div style="position:absolute;left:0;right:0;top:110px;text-align:center">{pill('수강후기 이벤트', size=40)}
+<div style="margin-top:34px">{line('베스트 후기는', 84, '#fff')}</div>
+<div style="margin-top:14px;display:flex;justify-content:center;align-items:flex-end;gap:8px">{big('최대 2만원', 190, '#FFD966')}</div>
+<div style="margin-top:24px">{line('적립해 드려요', 64, '#fff')}</div></div>
+{prop('prop-star', 230, 120, 780, 'transform:rotate(-10deg)')}<img src="file://{HERE}/cut/popper.png" style="position:absolute;left:740px;top:760px;height:250px;transform:rotate(-8deg);filter:drop-shadow(0 10px 14px rgba(0,0,0,.14))">"""),
+    '203': thumb('#FFF4E2', f"""
+<div style="position:absolute;left:0;right:0;top:110px;text-align:center">{pill('재수강 회원 전용', '#2DB46B', '#fff', 40)}
+<div style="margin-top:34px">{line('네이버 스토어에서', 80)}</div>
+<div style="margin-top:14px;display:flex;justify-content:center;align-items:center;gap:22px">{big('3만', 200, '#FFD45E')}<span style="font:900 130px/1 {F};color:#2DB46B">→</span>{big('4만', 200, '#EC6856')}</div>
+<div style="margin-top:20px">{line('매달 1만원 더 적립!', 64)}</div></div>
+{prop('prop-bag', 260, 140, 760, 'transform:rotate(-6deg)')}{prop('prop-coins', 210, 760, 820)}""", ('#2DB46B', '#FFD966', '#EC6856')),
     '211': thumb('#FFE7DE', f"""
 <div style="position:absolute;left:0;right:0;top:110px;text-align:center">{pill('신규회원 전용', size=40)}
 <div style="margin-top:34px">{line('첫 결제하면', 86)}</div>
