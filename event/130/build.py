@@ -8,7 +8,7 @@ CDN = 'https://minkyueine.github.io/ein-tools/event/130/'
 INK = '#2A211D'; CORAL = '#EC6856'; DEEP = '#C4452F'
 PAD = 'clamp(20px, 5vw, 32px)'
 GROUPS = {'new': ('🌱', '신규 회원', '#FDE3DC'), 're': ('🔁', '재수강 회원', '#FFF6D6'),
-          'ref': ('🤝', '친구 추천', '#E6F6EE'), 'all': ('🙌', '누구나', '#E3EDFF')}
+          'ref': ('🤝', '친구 추천', '#E6F6EE'), 'everyone': ('🙌', '누구나', '#E3EDFF')}
 
 def btn(href, text, primary=False):
     if primary:
@@ -27,7 +27,7 @@ def benefit(no, title, big, body, extra=''):
 
 def group(key, inner):
     e, name, bg = GROUPS[key]
-    return f'''<section id="{key}" style="margin-top: 40px; padding: 28px {PAD} 30px; background: {bg}">
+    return f'''<section id="{key}" style="scroll-margin-top: 140px; margin-top: 40px; padding: 28px {PAD} 30px; background: {bg}">
 <h2 style="margin: 0; font-size: 24px; line-height: 1.35; font-weight: 800; color: {INK}">{e} {name} 혜택</h2>
 {inner}</section>'''
 
@@ -38,8 +38,8 @@ def build(base):
     pills = ''.join(f'<a href="#{k}" style="display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px; border-radius: 22px; background: {bg}; border: 2px solid {INK}; color: {INK}; font-size: 16px; font-weight: 700; text-decoration: none">{e} {n}</a>' for k, (e, n, bg) in GROUPS.items())
     summary_rows = [('1', '무료체험 후기 작성', '3,000원 적립', 'new'), ('2', '첫 결제', '결제 금액 5% 적립', 'new'),
                     ('3', '네이버 스토어 이벤트', '3만원 → 4만원 적립', 're'), ('4', '친구 추천', '두 사람 각 5% 적립', 'ref'),
-                    ('5', '장기·집중 수강', '회당 최대 46.2% 할인', 'all'), ('6', '수강후기 작성', '베스트 후기 적립금', 'all'),
-                    ('7', '카드 결제', '무이자 할부', 'all')]
+                    ('5', '장기·집중 수강', '회당 최대 46.2% 할인', 'everyone'), ('6', '수강후기 작성', '베스트 후기 적립금', 'everyone'),
+                    ('7', '카드 결제', '무이자 할부', 'everyone')]
     summary = ''.join(f'<a href="#{g}" style="display: flex; align-items: center; gap: 12px; padding: 13px 4px; border-top: 1px solid #EFE6E2; color: {INK}; text-decoration: none"><span style="flex: none; width: 26px; height: 26px; border-radius: 50%; background: {GROUPS[g][2]}; border: 1.5px solid {INK}; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800">{n}</span><span style="flex: 1; font-size: 16px; font-weight: 700">{t}</span><span style="flex: none; font-size: 15px; font-weight: 800; color: {DEEP}">{v}</span></a>' for n, t, v, g in summary_rows)
 
     new = benefit(1, '무료체험 후기 작성', '3,000원 적립',
@@ -89,7 +89,7 @@ def build(base):
 {group('new', new)}
 {group('re', re)}
 {group('ref', ref)}
-{group('all', al)}
+{group('everyone', al)}
 
 <section style="padding: 40px {PAD} 44px; text-align: center">
 <div style="font-size: 22px; font-weight: 800; line-height: 1.45; color: {INK}">25분, 오늘부터 시작해 보세요 🙌</div>
