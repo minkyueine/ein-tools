@@ -106,14 +106,19 @@ def bub(text, bg='#fff', fs=38):
     return f'<div style="background:{bg};border:4px solid {INK};border-radius:28px;padding:{fs*.42:.0f}px {fs*.8:.0f}px;font:700 {fs}px/1.25 {F};color:{INK};white-space:nowrap">{text}</div>'
 
 
+def bust(name, vis, x, cut=0.56):
+    """대화 장면용 상반신: 허리 아래는 패널 밖으로 잘린다."""
+    return (f'<div style="position:absolute;left:{x}px;bottom:0;height:{vis}px;overflow:hidden">'
+            f'<img class="cc" src="{CAST}{name}.png" style="display:block;height:{vis/cut:.0f}px"></div>')
+
+
 def duo(lt, lc, lh, rt, rc, rh, bg):
     return f"""<div style="position:absolute;inset:4px;background:{bg};border:4px solid {INK};border-radius:44px;overflow:hidden">
-<div style="position:absolute;left:0;right:0;top:400px;bottom:-100px;background:rgba(255,255,255,.55);border-radius:50% 50% 0 0/50px 50px 0 0"></div>
-{ch(lc, lh, 110, 30)}{ch(rc, rh, 580, 30)}
+{bust(lc, lh, 120)}{bust(rc, rh, 560)}
 <div class="bb" style="position:absolute;left:30px;top:28px;z-index:2">{bub(lt)}</div><div class="bb" style="position:absolute;right:30px;top:28px;z-index:2">{bub(rt, '#FFD966')}</div></div>"""
 
 
-H = 300  # 말풍선(위쪽 약 165px)과 겹치지 않는 높이
+H = 240  # 상반신 보이는 높이. 말풍선(위쪽 약 165px)과 겹치지 않게
 S = {
     '130': duo('친구랑 같이<br>시작할래요!', 'adult-recommend', H, '두 분 다 5%씩<br>적립해 드려요!', 'teacher-clap', H, '#E6F6EE'),
     '206': duo('한 번에 결제하기<br>부담돼요', 'adult-phone', H, '카드 무이자 할부로<br>나눠 내세요!', 'teacher-explain', H, '#E3EDFF'),
@@ -129,7 +134,7 @@ S = {
 # ── 좁은 띠 그림(투명 배경): 캐릭터 한 명 + 큰 말풍선 ───────────────
 def strip(w, who, text):
     return f"""<div style="position:absolute;inset:0;display:flex;align-items:center;gap:26px;padding:0 10px">
-<img src="{CAST}{who}.png" style="height:218px;flex:none">
+<div style="flex:none;align-self:flex-end;height:226px;overflow:hidden"><img src="{CAST}{who}.png" style="display:block;height:404px"></div>
 <div style="background:#fff;border:5px solid {INK};border-radius:30px;padding:20px 30px;font:800 42px/1.25 {F};color:{INK};letter-spacing:-.02em">{text}</div></div>"""
 
 
@@ -143,7 +148,7 @@ SCENE_FILE = {'130': 'scene-friend.png'}
 
 jobs = []
 for pid, html in B.items(): jobs.append((f'{root}/{pid}/{BANNER_FILE[pid]}', 1080, 1080, html, False))
-for pid, html in S.items(): jobs.append((f'{root}/{pid}/{SCENE_FILE.get(pid, "scene-hello.png")}', 900, 540, html, True))
+for pid, html in S.items(): jobs.append((f'{root}/{pid}/{SCENE_FILE.get(pid, "scene-hello.png")}', 900, 430, html, True))
 for (pid, name, w), html in X.items(): jobs.append((f'{root}/{pid}/{name}', w, 230, html, True))
 
 with sync_playwright() as p:
