@@ -1,4 +1,4 @@
-"""블로그 목록 썸네일(1080×1080) v2: 큰 글자 + 큰 3D 오브젝트 하나. 캐릭터 없음.
+"""블로그 목록 썸네일(1080×1080) v2: 큰 글자 두 줄 + 큰 3D 오브젝트 하나. 캐릭터·작은 글씨 없음.
 사용법: python3 tools/3d/thumbs_v2.py 출력폴더
 이벤트 글은 event/<id>/thumb.png 로, 이용 가이드는 출력폴더/guide_<id>.png 로 저장한다."""
 import sys, os
@@ -13,12 +13,10 @@ def card(bg, glow, pill, head, big, sub, img, ink='#fff', big_color=None, pill_b
     big_color = big_color or ink
     return f"""<div style="position:absolute;inset:0;background:{bg};overflow:hidden;font-family:{F}">
 <div style="position:absolute;right:-160px;bottom:-200px;width:820px;height:820px;border-radius:50%;background:{glow}"></div>
-<div style="position:absolute;left:84px;top:84px;right:84px">
- <div style="display:inline-block;background:{pill_bg};color:{pill_fg};font:800 34px/1 {F};padding:16px 26px;border-radius:40px">{pill}</div>
- <div style="margin-top:40px;font:800 76px/1.15 {F};color:{ink};letter-spacing:-.03em">{head}</div>
- <div class="fit" style="margin-top:10px;font:900 190px/1.02 {F};color:{big_color};letter-spacing:-.05em;white-space:nowrap">{big}</div>
+<div style="position:absolute;left:84px;top:110px;right:84px">
+ <div style="font:800 88px/1.15 {F};color:{ink};letter-spacing:-.03em">{head}</div>
+ <div class="fit" style="margin-top:14px;font:900 210px/1.02 {F};color:{big_color};letter-spacing:-.05em;white-space:nowrap">{big}</div>
 </div>
-<div style="position:absolute;left:84px;bottom:84px;font:700 40px/1.3 {F};color:{ink};opacity:.92;max-width:430px">{sub}</div>
 <img src="{img}" style="position:absolute;right:56px;bottom:56px;max-height:{img_h}px;max-width:560px;filter:drop-shadow(0 26px 34px rgba(0,0,0,.22))">
 </div>"""
 
