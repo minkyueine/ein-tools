@@ -1,0 +1,146 @@
+{
+ "posts": [
+  {
+   "prefix": "p1",
+   "category": "knowhow",
+   "thumbnail": {
+    "line1": "화상영어 롤플레이",
+    "line2": "길 안내 영어",
+    "band": "순서대로 말하는 3단계",
+    "sub": "Go straight → Turn left → It's next to…",
+    "bubble": "어디지?",
+    "mood": "think"
+   },
+   "body": [
+    {
+     "type": "cards",
+     "file": "p1_body1.png",
+     "title": "길 안내는 이 3단계로 말해요",
+     "rows": [
+      {
+       "label": "출발점 먼저 말하기",
+       "main": "Come out of ___.",
+       "example": "Come out of Exit 3 and go straight.",
+       "note": "3번 출구로 나와서 쭉 가세요."
+      },
+      {
+       "label": "방향은 한 번에 하나씩",
+       "main": "Turn left / right at ___.",
+       "example": "Turn left at the bank.",
+       "note": "은행에서 왼쪽으로 도세요."
+      },
+      {
+       "label": "도착 표지 알려주기",
+       "main": "It's next to ___.",
+       "example": "It's next to the pharmacy.",
+       "note": "약국 옆에 있어요."
+      }
+     ]
+    },
+    {
+     "type": "dialogue",
+     "file": "p1_body2.png",
+     "title": "수업에서는 이렇게 이어져요",
+     "turns": [
+      {
+       "who": "teacher",
+       "lines": [
+        "Excuse me, how do I get to the library?"
+       ],
+       "ko": "실례합니다, 도서관에 어떻게 가나요?"
+      },
+      {
+       "who": "student",
+       "mood": "smile",
+       "lines": [
+        "Come out of Exit 3 and go straight.",
+        "Then turn left at the bank."
+       ],
+       "ko": "3번 출구로 나와 쭉 가다가 은행에서 왼쪽으로 도세요."
+      },
+      {
+       "who": "student",
+       "mood": "smile",
+       "lines": [
+        "It's next to the pharmacy."
+       ],
+       "ko": "도서관은 약국 옆에 있어요."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "prefix": "p2",
+   "category": "tip",
+   "thumbnail": {
+    "line1": "영어 섀도잉",
+    "line2": "혼자 하는 방법",
+    "band": "짧은 문장 4단계",
+    "sub": "뜻 → 표시 → 따라 하기 → 녹음",
+    "bubble": "따라 해요!",
+    "mood": "smile"
+   },
+   "body": [
+    {
+     "type": "note",
+     "file": "p2_body1.png",
+     "title": "섀도잉 전에 문장에 표시해요",
+     "steps": [
+      {
+       "label": "뜻을 먼저 확인하기",
+       "lines": [
+        "I usually take the subway to work.",
+        "저는 보통 지하철로 출근해요."
+       ]
+      },
+      {
+       "label": "끊는 곳(/)과 힘주는 단어 표시",
+       "lines": [
+        "I [[usually]] take the [[subway]] /",
+        "to [[work]]."
+       ]
+      },
+      {
+       "label": "따라 하기 전 한 줄 메모",
+       "big": false,
+       "lines": [
+        "usually, subway, work → 또렷하게",
+        "the, to → 짧고 약하게"
+       ]
+      }
+     ]
+    },
+    {
+     "type": "table",
+     "file": "p2_body2.png",
+     "title": "섀도잉 4단계 한눈에 보기",
+     "headers": [
+      "단계",
+      "이렇게 해요"
+     ],
+     "rows": [
+      [
+       "1. 뜻 확인",
+       "스크립트 읽고 이해하기"
+      ],
+      [
+       "2. 표시",
+       "끊는 곳, 힘주는 단어"
+      ],
+      [
+       "3. 따라 하기",
+       "반 박자 뒤에서 3번"
+      ],
+      [
+       "4. 녹음",
+       "원본과 한 군데 비교"
+      ]
+     ],
+     "footnote": "10초 안쪽의 짧은 문장 하나로 시작해요. 횟수는 익숙해지는 만큼 조절하면 돼요.",
+     "mood": "smile"
+    }
+   ]
+  }
+ ]
+}
