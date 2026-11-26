@@ -153,3 +153,50 @@ with sync_playwright() as p:
         else: pg.screenshot(path=path, omit_background=transparent)
         pg.close(); print(path)
     b.close()
+
+
+# ── 목록 썸네일 1080×1080: 캐릭터 없이, 큰 혜택 글자 + 3D 소품 하나 ─────────
+def thumb(bg, inner, deco=('#fff', '#FFD966')):
+    return f'<div style="position:absolute;inset:0;background:{bg};overflow:hidden">{dots(list(deco))}{inner}</div>'
+
+
+T = {
+    '206': thumb('linear-gradient(160deg,#7DB0F7,#4F86E6)', f"""
+<div style="position:absolute;left:90px;top:120px">{pill('카드 결제 부담 DOWN', size=40)}
+<div style="margin-top:40px">{line('5만원 이상이면', 72, '#fff')}</div>
+<div style="margin-top:8px">{big('무이자', 230)}</div><div style="margin-top:6px">{big('할부', 230, '#FFD966')}</div>
+<div style="margin-top:30px">{line('최대 6개월까지', 60, '#fff')}</div></div>
+{prop('prop-card', 330, 680, 640, 'transform:rotate(-14deg)')}"""),
+    '887': thumb('#2F9C95', f"""
+<div style="position:absolute;left:0;right:0;top:120px;text-align:center">{pill('신규회원 한정', size=40)}
+<div style="margin-top:34px">{line('25분 수업 3회', 92, '#fff')}</div>
+<div style="margin-top:14px;display:flex;justify-content:center;align-items:flex-end;gap:8px">{big('10,000', 230, '#FFD966')}{big('원', 120, '#FFD966', sw=6)}</div>
+<div style="margin-top:26px">{line('1회당 약 3,300원', 56, '#E6FFFB')}</div></div>
+{prop('prop-star', 210, 790, 770, 'transform:rotate(12deg)')}{prop('prop-coin', 150, 120, 820, 'transform:rotate(-14deg)')}"""),
+    '207': thumb('radial-gradient(circle at 50% 35%,#7CD6A0,#3FAE72)', f"""
+<div style="position:absolute;left:0;right:0;top:110px;text-align:center">{pill('지인 추천 이벤트', '#fff', size=40)}
+<div style="margin-top:34px">{line('추천하면 둘 다', 80, '#fff')}</div>
+<div style="margin-top:10px;display:flex;justify-content:center;align-items:center;gap:20px">{big('5%', 230)}<span style="font:900 120px/1 {F};color:#FFD966;-webkit-text-stroke:6px {INK};paint-order:stroke fill">+</span>{big('5%', 230)}</div></div>
+{prop('prop-coins', 300, 390, 700)}"""),
+    '205': thumb('#FFD45E', f"""
+<div style="position:absolute;left:0;right:0;top:110px;text-align:center">{pill('신규 회원 선물', '#fff', size=40)}
+<div style="margin-top:34px">{line('무료체험 후기 쓰면', 80)}</div>
+<div style="margin-top:14px;display:flex;justify-content:center;align-items:flex-end;gap:8px">{big('3,000', 220, '#EC6856')}{big('원', 120, '#EC6856', sw=6)}</div>
+<div style="margin-top:20px">{line('바로 적립!', 72)}</div></div>
+{prop('prop-bubble', 230, 110, 760, 'transform:rotate(-8deg)')}{prop('prop-coins', 220, 760, 800)}""", ('#fff', '#EC6856')),
+    '211': thumb('#FFE7DE', f"""
+<div style="position:absolute;left:0;right:0;top:110px;text-align:center">{pill('신규회원 전용', size=40)}
+<div style="margin-top:34px">{line('첫 결제하면', 86)}</div>
+<div style="margin-top:10px;display:flex;justify-content:center;align-items:flex-end;gap:10px">{big('5%', 260, '#EC6856')}{big('적립', 140, '#EC6856', sw=6)}</div>
+<div style="margin-top:20px">{line('1·3·6개월 수강권 · 주 2회 이상', 46, '#7a5a50')}</div></div>
+{prop('prop-gift', 260, 410, 770, 'transform:rotate(6deg)')}""", ('#EC6856', '#FFD966')),
+}
+
+with sync_playwright() as p:
+    b = p.chromium.launch(executable_path='/usr/bin/google-chrome')
+    for pid, html in T.items():
+        tmp = '/tmp/cast_thumb.html'
+        open(tmp, 'w').write(f'<html><body style="margin:0;width:1080px;height:1080px;position:relative;overflow:hidden">{html}</body></html>')
+        pg = b.new_page(viewport={'width': 1080, 'height': 1080}); pg.goto('file://' + tmp); pg.wait_for_timeout(300)
+        pg.screenshot(path=f'{root}/{pid}/thumb.png'); pg.close(); print(f'{root}/{pid}/thumb.png')
+    b.close()
