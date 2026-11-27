@@ -167,4 +167,6 @@ os.makedirs('/home/claude/out/mgr',exist_ok=True)
 jobs={}
 for k,(w,h,html) in J.items():
     jobs[f'/home/claude/out/mgr/{k}']=(w,h,f'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">{html}</div>')
-render(jobs,1)
+render(jobs,3)
+from PIL import Image
+for p,(w,h,_) in jobs.items(): Image.open(p).resize((w,h),Image.LANCZOS).save(p)

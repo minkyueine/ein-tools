@@ -22,11 +22,14 @@ def col(*items,gap=18,style=''):
     return f'<div style="display:flex;flex-direction:column;align-items:center;gap:{gap}px;{style}">{"".join(items)}</div>'
 def panel(inner,bg='#FFFFFF'):
     return f'<div style="position:absolute;inset:4px;box-sizing:border-box;background:{bg};border:4px solid {INK};border-radius:44px;overflow:hidden;display:flex;align-items:center;justify-content:center">{inner}</div>'
-def render(jobs):
+def render(jobs,scale=3):
+    """scale배로 그린 뒤 원래 크기로 줄인다 — 작은 캐릭터의 선이 깨지지 않게."""
+    from PIL import Image
     with sync_playwright() as pw:
         b=pw.chromium.launch(executable_path='/usr/bin/google-chrome')
         for path,(w,h,html) in jobs.items():
-            pg=b.new_page(viewport={'width':w,'height':h})
+            pg=b.new_page(viewport={'width':w,'height':h},device_scale_factor=scale)
             pg.set_content(f'<body style="margin:0;width:{w}px;height:{h}px;position:relative;overflow:hidden;background:transparent;display:flex;align-items:center;justify-content:center">{html}</body>')
             pg.screenshot(path=path,omit_background=True); pg.close()
+            if scale!=1: Image.open(path).resize((w,h),Image.LANCZOS).save(path)
         b.close()
