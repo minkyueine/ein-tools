@@ -1,0 +1,70 @@
+{
+ "posts": [
+  {
+   "prefix": "p1",
+   "category": "knowhow",
+   "thumbnail": {
+    "line1": "화상영어 롤플레이",
+    "line2": "식당 예약 영어",
+    "band": "전화로 예약하는 3단계",
+    "sub": "I'd like to book a table for…",
+    "bubble": "예약할게요!",
+    "mood": "smile"
+   },
+   "body": [
+    {
+     "type": "cards",
+     "file": "p1_body1.png",
+     "title": "식당 예약은 이 3단계로 말해요",
+     "rows": [
+      {"label": "날짜·시간·인원 말하기", "main": "I'd like to book a table for ___.", "example": "I'd like to book a table for four at seven.", "note": "7시에 네 명 자리를 예약하고 싶어요."},
+      {"label": "요청 한 가지 덧붙이기", "main": "Could we have ___?", "example": "Could we have a table by the window?", "note": "창가 자리로 할 수 있을까요?"},
+      {"label": "예약 내용 다시 확인하기", "main": "So that's ___, right?", "example": "So that's four people at seven, right?", "note": "7시에 네 명, 맞죠?"}
+     ]
+    },
+    {
+     "type": "dialogue",
+     "file": "p1_body2.png",
+     "title": "수업에서는 이렇게 이어져요",
+     "turns": [
+      {"who": "student", "mood": "smile", "lines": ["I'd like to book a table for four", "at seven this Saturday."], "ko": "이번 토요일 7시에 네 명 자리를 예약하고 싶어요."},
+      {"who": "teacher", "lines": ["Sure. Can I have your name?"], "ko": "네, 성함이 어떻게 되세요?"},
+      {"who": "student", "mood": "smile", "lines": ["It's Kim, K-I-M.", "Could we have a table by the window?"], "ko": "김입니다. 창가 자리로 할 수 있을까요?"}
+     ]
+    }
+   ]
+  },
+  {
+   "prefix": "p2",
+   "category": "tip",
+   "thumbnail": {
+    "line1": "see look watch",
+    "line2": "차이 구분하기",
+    "band": "헷갈릴 때 보는 3가지 기준",
+    "sub": "보이다 · 쳐다보다 · 지켜보다",
+    "bubble": "뭐가 달라?",
+    "mood": "think"
+   },
+   "body": [
+    {
+     "type": "cards",
+     "file": "p2_body1.png",
+     "title": "see, look, watch 이렇게 나눠요",
+     "rows": [
+      {"label": "see: 저절로 보일 때", "main": "I saw ___.", "example": "I saw Mina at the station.", "note": "역에서 미나를 봤어요. (눈에 들어옴)"},
+      {"label": "look: 눈길을 돌릴 때", "main": "Look at ___.", "example": "Look at this photo.", "note": "이 사진 좀 보세요. (일부러 쳐다봄)"},
+      {"label": "watch: 움직임을 지켜볼 때", "main": "I watched ___.", "example": "I watched a soccer game last night.", "note": "어젯밤에 축구 경기를 봤어요. (계속 지켜봄)"}
+     ]
+    },
+    {
+     "type": "table",
+     "file": "p2_body2.png",
+     "title": "상황별로 골라 보세요",
+     "headers": ["이런 상황이면", "이렇게 말해요"],
+     "rows": [["길에서 친구가 보였다", "I saw my friend."], ["시계를 쳐다봤다", "I looked at the clock."], ["아이가 노는 걸 지켜봤다", "I watched my kid play."], ["안경 없이는 안 보인다", "I can't see without glasses."], ["창밖을 내다봤다", "I looked out the window."]],
+     "footnote": "자주 쓰는 기준이에요. 굳어진 표현은 문장째로 익혀 두면 좋아요."
+    }
+   ]
+  }
+ ]
+}
