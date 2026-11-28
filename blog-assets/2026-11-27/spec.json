@@ -4,12 +4,15 @@
    "prefix": "p1",
    "category": "knowhow",
    "thumbnail": {
-    "line1": "화상영어 롤플레이",
-    "line2": "길 안내 영어",
-    "band": "순서대로 말하는 3단계",
-    "sub": "Go straight → Turn left → It's next to…",
-    "bubble": "어디지?",
-    "mood": "think"
+    "layout": "scene",
+    "scene": "directions",
+    "palette": "lemon",
+    "kicker": "화상영어 롤플레이",
+    "title": [
+     "길 안내 영어",
+     "순서대로 3단계"
+    ],
+    "hook": "Turn left at the bank."
    },
    "body": [
     {
@@ -74,12 +77,15 @@
    "prefix": "p2",
    "category": "tip",
    "thumbnail": {
-    "line1": "영어 섀도잉",
-    "line2": "혼자 하는 방법",
-    "band": "짧은 문장 4단계",
-    "sub": "뜻 → 표시 → 따라 하기 → 녹음",
-    "bubble": "따라 해요!",
-    "mood": "smile"
+    "layout": "scene",
+    "scene": "shadowing",
+    "palette": "night",
+    "kicker": "혼자 하는 영어 섀도잉",
+    "title": [
+     "따라 말하기",
+     "짧은 문장 4단계"
+    ],
+    "hook": "Listen → Repeat"
    },
    "body": [
     {

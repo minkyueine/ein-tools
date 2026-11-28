@@ -3,6 +3,7 @@
 
 사용법:  python3 blog_images.py spec.json 출력폴더
 글마다 썸네일 1장(1200x1200)과 본문 이미지(1200x900)를 만든다.
+thumbnail에 "title"이 있으면 새 썸네일(thumbs.py: 주제 장면·글마다 다른 색)로 만든다. 필드 설명은 thumbs.py 맨 위.
 category: "knowhow"(화상영어노하우, 노랑) 또는 "tip"(영어공부꿀팁, 민트)
 본문 이미지 type: cards | dialogue | table | note   (예시는 example_spec.json)
 필요한 것: Pillow, Noto Sans CJK 글꼴(/usr/share/fonts/opentype/noto)
@@ -197,8 +198,11 @@ def note(name,th,b):
 DRAW={'cards':cards,'dialogue':dialogue,'table':table,'note':note}
 def main(spec_path,outdir):
     spec=json.load(open(spec_path,encoding='utf-8')); os.makedirs(outdir,exist_ok=True)
+    new=[p for p in spec['posts'] if 'title' in p['thumbnail']]   # 2026-11-28 개편 썸네일(thumbs.py)
     for p in spec['posts']:
         th=THEME[p['category']]
-        thumb(os.path.join(outdir,p['prefix']+'_thumbnail_1200.png'),th,p['thumbnail'])
-        for b in p['body']: DRAW[b['type']](os.path.join(outdir,b['file']),th,b)
+        if p not in new: thumb(os.path.join(outdir,p['prefix']+'_thumbnail_1200.png'),th,p['thumbnail'])
+        for b in p.get('body',[]): DRAW[b['type']](os.path.join(outdir,b['file']),th,b)
+    if new:
+        sys.path.insert(0,os.path.dirname(os.path.abspath(__file__))); import thumbs; thumbs.render(new,outdir)
 if __name__=='__main__': main(sys.argv[1],sys.argv[2])

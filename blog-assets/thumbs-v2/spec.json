@@ -1,0 +1,103 @@
+{
+ "posts": [
+  {
+   "prefix": "2026-11-24_p1",
+   "category": "knowhow",
+   "thumbnail": {
+    "layout": "scene",
+    "scene": "wordblank",
+    "palette": "pink",
+    "kicker": "화상영어 말문 막힐 때",
+    "title": [
+     "단어가 생각 안 날 때",
+     "풀어 말하는 3문장"
+    ],
+    "hook": "It's a thing you use to…"
+   }
+  },
+  {
+   "prefix": "2026-11-24_p2",
+   "category": "tip",
+   "thumbnail": {
+    "layout": "scene",
+    "scene": "dictation",
+    "palette": "tangerine",
+    "kicker": "영어 듣기 받아쓰기",
+    "title": [
+     "10초 문장으로",
+     "받아쓰기 4단계"
+    ],
+    "hook": "gonna? going to!"
+   }
+  },
+  {
+   "prefix": "2026-11-25_p1",
+   "category": "knowhow",
+   "thumbnail": {
+    "layout": "scene",
+    "scene": "opinion",
+    "palette": "lilac",
+    "kicker": "화상영어 의견 말하기",
+    "title": [
+     "대답이 짧다면",
+     "이유 붙이는 3단계"
+    ]
+   }
+  },
+  {
+   "prefix": "2026-11-25_p2",
+   "category": "tip",
+   "thumbnail": {
+    "layout": "scene",
+    "scene": "review",
+    "palette": "forest",
+    "kicker": "영어 수업 복습 방법",
+    "title": [
+     "수업 끝나고 10분",
+     "복습 노트 3단계"
+    ],
+    "hook": "Write · Rewrite · Record"
+   }
+  },
+  {
+   "prefix": "2026-11-26_p1",
+   "category": "knowhow",
+   "thumbnail": {
+    "layout": "scene",
+    "scene": "weekend",
+    "palette": "pink",
+    "kicker": "화상영어 주말 이야기",
+    "title": [
+     "Good, 하고 끝?",
+     "길게 답하는 3단계"
+    ],
+    "hook": "How was your weekend?"
+   }
+  },
+  {
+   "prefix": "2026-11-26_p2",
+   "category": "tip",
+   "thumbnail": {
+    "layout": "versus",
+    "palette": "cobalt",
+    "kicker": "헷갈리는 영어 표현",
+    "title": [
+     "say와 tell 차이",
+     "3가지 기준"
+    ],
+    "words": [
+     {
+      "w": "say",
+      "ko": "말하다",
+      "icon": "speak"
+     },
+     {
+      "w": "tell",
+      "ko": "~에게 말하다",
+      "icon": "ear"
+     }
+    ]
+   }
+  }
+ ]
+}
